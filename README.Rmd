@@ -60,7 +60,7 @@ This is a basic example which shows you how to solve a common problem:
 # library(NCAGEDdataR)
 
 ## basic example code
-# NCAGEDdataR(2023, "Abril")
+# NCdata(2023, "Abril")
 
 ```
 
