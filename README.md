@@ -26,12 +26,13 @@ do Ministério do Trabalho -
 <!-- [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/RichDeto/geouy?branch=master&svg=true)](https://ci.appveyor.com/project/RichDeto/geouy) -->
 <!-- [![R](https://github.com/Natanaelsl/NCAGEDdataR/actions/workflows/r.yml/badge.svg)](https://github.com/Natanaelsl/NCAGEDdataR/actions/workflows/r.yml) -->
 
-<figure>
-<img
-src="https://img.shields.io/github/stars/Natanaelsl/pagedreport?color=orange"
-alt="GitHub Repo stars" />
-<figcaption aria-hidden="true">GitHub Repo stars</figcaption>
-</figure>
+![GitHub commit activity
+(branch)](https://img.shields.io/github/commit-activity/Natanaelsl/NCAGEDdataR)
+![GitHub R package version (subdirectory of
+monorepo)](https://img.shields.io/github/r-package/v/Natanaelsl/NCAGEDdataR)
+![GitHub Repo
+stars](https://img.shields.io/github/stars/Natanaelsl/pagedreport?color=orange)
+![GitHub](https://img.shields.io/github/license/Natanaelsl/NCAGEDdataR)
 
 <!-- badges: end -->
 
@@ -41,8 +42,8 @@ alt="GitHub Repo stars" />
 
 ## Installation
 
-You can install the development version of NCAGEDdataR from
-[GitHub](https://github.com/) with:
+Você pode instalar a versão de desenvolvimento do NCAGEDdataR no
+[GitHub](https://github.com/) com:
 
 ``` r
 # install.packages("devtools")
@@ -53,7 +54,7 @@ devtools::install_github("Natanaelsl/NCAGEDdataR")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+Este é um exemplo básico que mostra como resolver um problema comum:
 
 ``` r
 library(NCAGEDdataR)
@@ -84,6 +85,3 @@ de informações captadas dos sistemas eSocial, Caged e Empregador Web.
 A sintaxe da função `NCAGEDdataR` opera com a mesma lógica
 independentemente da base de interesse, o que torna intuitivo o download
 de qualquer conjunto de dados usando uma única linha de código. Assim:
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
