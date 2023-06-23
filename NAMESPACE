@@ -2,4 +2,5 @@
 
 export("%>%")
 export(NCdata)
+export(NCdown)
 importFrom(magrittr,"%>%")
