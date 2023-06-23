@@ -2,15 +2,18 @@
 % Please edit documentation in R/NCdata.R
 \name{NCdata}
 \alias{NCdata}
-\title{NCAGEDdataR: Extração de dados do NOVO CAGED}
+\title{NCAGEDdataR: Extra????o de dados do NOVO CAGED}
 \usage{
-NCdata(ano = NULL, mês = NULL)
+NCdata(year = NULL, month = NULL)
 }
 \arguments{
-\item{ano}{valor numérico}
+\item{year}{valor num??rico}
 
-\item{mês}{string para o mês}
+\item{month}{string para o m??s}
+}
+\value{
+Uma lista de data.frame
 }
 \description{
-NCAGEDdataR: Extração de dados do NOVO CAGED
+'
 }
