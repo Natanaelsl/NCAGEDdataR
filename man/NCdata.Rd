@@ -15,10 +15,9 @@ NCdata(year = NULL, month = NULL)
 Uma lista de data.frame
 }
 \description{
-'
+NCAGEDdataR: Extração de dados do NOVO CAGED
 }
 \examples{
 NCdata(2023, "Janeiro")
-
 
 }
