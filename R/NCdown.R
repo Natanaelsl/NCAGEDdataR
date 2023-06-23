@@ -53,7 +53,7 @@ NCdown <- function(year = NULL, month = NULL, path = NULL) {
 
       url <- paste0("http://pdet.mte.gov.br", xlsx)
 
-      cli::cli_progress_step("Come\\u00e7ando o Download dos Dados CAGED", spinner = TRUE)
+      cli::cli_progress_step(paste0("Come", "\\u00e7", "ando o Download dos Dados CAGED"), spinner = TRUE)
       cli::cli_progress_step("Download realizado!", spinner = TRUE)
 
       httr::GET(url, httr::write_disk(tf <- paste0(path, "NOVO_CAGED_", month, "_", year, ".xlsx")), httr::progress(), overwrite = FALSE)
