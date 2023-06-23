@@ -10,9 +10,8 @@
 
 **NCAGEDdataR** é um pacote R que permite aos usuários acessar
 facilmente conjuntos de dados do **NOVO CAGED**. O pacote realiza a
-extração dos dados retornando as tabelas (`as.data.frame`) como
-*objetos* para cada uma das abas do aquivo .xlsx dísponibilizado no site
-do Ministério do Trabalho -
+extração dos dados retornando como lista com cada uma das abas do aquivo
+.xlsx dísponibilizado no site do Ministério do Trabalho -
 **[PDET](http://pdet.mte.gov.br/novo-caged)**.
 
 <br />
@@ -38,7 +37,7 @@ stars](https://img.shields.io/github/stars/Natanaelsl/pagedreport?color=orange)
 
 <!-- --- -->
 
-## Installation
+## Instalação
 
 Você pode instalar a versão de desenvolvimento do NCAGEDdataR no
 [GitHub](https://github.com/) com:
@@ -50,7 +49,7 @@ devtools::install_github("Natanaelsl/NCAGEDdataR")
 
 <!-- --- -->
 
-## Example
+## Exemplo
 
 Este é um exemplo básico que mostra como resolver um problema comum:
 
@@ -82,4 +81,4 @@ de informações captadas dos sistemas eSocial, Caged e Empregador Web.
 
 A sintaxe da função `NCAGEDdataR` opera com a mesma lógica
 independentemente da base de interesse, o que torna intuitivo o download
-de qualquer conjunto de dados usando uma única linha de código. Assim:
+de qualquer conjunto de dados usando uma única linha de código.
