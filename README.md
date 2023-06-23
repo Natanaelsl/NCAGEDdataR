@@ -26,8 +26,6 @@ do Ministério do Trabalho -
 <!-- [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/RichDeto/geouy?branch=master&svg=true)](https://ci.appveyor.com/project/RichDeto/geouy) -->
 <!-- [![R](https://github.com/Natanaelsl/NCAGEDdataR/actions/workflows/r.yml/badge.svg)](https://github.com/Natanaelsl/NCAGEDdataR/actions/workflows/r.yml) -->
 
-![GitHub commit activity
-(branch)](https://img.shields.io/github/commit-activity/Natanaelsl/NCAGEDdataR)
 ![GitHub R package version (subdirectory of
 monorepo)](https://img.shields.io/github/r-package/v/Natanaelsl/NCAGEDdataR)
 ![GitHub Repo
