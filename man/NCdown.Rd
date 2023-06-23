@@ -2,7 +2,7 @@
 % Please edit documentation in R/NCdown.R
 \name{NCdown}
 \alias{NCdown}
-\title{NCAGEDdataR: Extração de dados do NOVO CAGED}
+\title{NCAGEDdataR: Download dos dados do NOVO CAGED}
 \usage{
 NCdown(year = NULL, month = NULL, path = NULL)
 }

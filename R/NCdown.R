@@ -1,4 +1,4 @@
-#' NCAGEDdataR: Extração de dados do NOVO CAGED
+#' NCAGEDdataR: Download dos dados do NOVO CAGED
 #'
 #''
 #' @param year valor numérico
@@ -6,7 +6,6 @@
 #' @param path diretório para salvar os dados baixados
 #'
 #' @return Retorna a planilha do PDET com os dados do NOVO CAGED
-#'
 #'
 #' @export
 NCdown <- function(year = NULL, month = NULL, path = NULL) {
