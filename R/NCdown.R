@@ -100,7 +100,7 @@ NCdown <- function(year = NULL, month = NULL, path = NULL) {
       }
       if(abjutils::rm_accent(tolower({{month}})) != abjutils::rm_accent(tolower({{month1}})) | is.null(year) & is.null(month)){
         cli::cli_alert_info("Poss\\u00edvel erro na declara\\u00e7\\u00e3o das informa\\u00e7\\u00f5es de ano e m\\u00eas! \nVerificar dados informados.\n")
-        pesquisa <- gtools::ask(paste("\nUtilizar \\u00faltima pesquisa dispon\\u00edvel? (", month1, ") \nInforme 'sim' ou 'não'!"))
+        pesquisa <- gtools::ask(paste("\nUtilizar última pesquisa disponível? (", month1, ") \nInforme 'sim' ou 'não'!"))
         pesquisa <- as.character(pesquisa)
 
         if(pesquisa == "sim"){
