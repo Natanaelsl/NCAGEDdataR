@@ -53,7 +53,7 @@ NCdown <- function(year = NULL, month = NULL, path = NULL) {
 
       url <- paste0("http://pdet.mte.gov.br", xlsx)
 
-      # cli::cli_progress_step(paste0("Come", "\\u00e7", "ando o Download dos Dados CAGED"), spinner = TRUE)
+      cli::cli_progress_step(paste0("Come", "\\u00e7", "ando o Download dos Dados CAGED"), spinner = TRUE)
       cli::cli_progress_step("Download realizado!", spinner = TRUE)
 
       httr::GET(url, httr::write_disk(tf <- paste0(path, "NOVO_CAGED_", month, "_", year, ".xlsx")), httr::progress(), overwrite = FALSE)
@@ -87,7 +87,7 @@ NCdown <- function(year = NULL, month = NULL, path = NULL) {
 
         url <- paste0("http://pdet.mte.gov.br", xlsx2)
 
-        # cli::cli_progress_step("Come\\u00e7ando o Download dos Dados CAGED", spinner = TRUE)
+        cli::cli_progress_step("Come\\u00e7ando o Download dos Dados CAGED", spinner = TRUE)
         cli::cli_progress_step("Download realizado!", spinner = TRUE)
 
         httr::GET(url, httr::write_disk(tf <- paste0(path, "NOVO_CAGED_", month, "_", year, ".xlsx")), httr::progress(), overwrite = FALSE)
@@ -98,9 +98,9 @@ NCdown <- function(year = NULL, month = NULL, path = NULL) {
         cli::cli_progress_done()
 
       }
-      if(abjutils::rm_accent(tolower({{month}})) != abjutils::rm_accent(tolower({{month1}})) | is.null(year) & is.null(month)){
+      if(abjutils::rm_accent(tolower({{month}})) != abjutils::rm_accent(tolower({{month1}})) | is.null(year) & is.null(month) & !is.null(path)){
         cli::cli_alert_info("Poss\\u00edvel erro na declara\\u00e7\\u00e3o das informa\\u00e7\\u00f5es de ano e m\\u00eas! \nVerificar dados informados.\n")
-        pesquisa <- gtools::ask(paste("\nUtilizar última pesquisa disponível? (", month1, ") \nInforme 'sim' ou 'não'!"))
+        pesquisa <- gtools::ask(paste("\nUtilizar \\u00faltima pesquisa dispon\\u00edvel? (", month1, ") \nInforme 'sim' ou 'n\\u00e3o'!"))
         pesquisa <- as.character(pesquisa)
 
         if(pesquisa == "sim"){
@@ -123,7 +123,7 @@ NCdown <- function(year = NULL, month = NULL, path = NULL) {
           cli::cli_progress_done()
 
         }
-        if(pesquisa == "não"){
+        if(pesquisa == "n\\u00e3o"){
 
           cli::cli_alert_danger("Tudo bem, verifique os dados informados!")
 
