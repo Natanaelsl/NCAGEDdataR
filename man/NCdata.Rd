@@ -2,7 +2,7 @@
 % Please edit documentation in R/NCdata.R
 \name{NCdata}
 \alias{NCdata}
-\title{NCAGEDdataR: Extração de dados do NOVO CAGED}
+\title{NCdata: Extração de dados do NOVO CAGED}
 \usage{
 NCdata(year = NULL, month = NULL)
 }
@@ -15,7 +15,7 @@ NCdata(year = NULL, month = NULL)
 Uma lista de data.frame para cada um dos 'sheet' da planilha do NOVO CAGED.
 }
 \description{
-NCAGEDdataR: Extração de dados do NOVO CAGED
+Realiza o extração dos dados, para o ano e mês especificados, retornando como lista de data.frame cada uma das abas do aquivo .xlsx dísponibilizado no site do Ministério do Trabalho - PDET.
 }
 \examples{
 NCdata(2023, "Janeiro")

@@ -1,6 +1,7 @@
-#' NCAGEDdataR: Download dos dados do NOVO CAGED
+#' NCdown: Download dos dados do NOVO CAGED
 #'
-#''
+#' Realiza o download do aquivo .xlsx no site do Ministério do Trabalho - PDET com os dados do NOVO CAGED para o ano e mês especificados.
+#'
 #' @param year valor numérico
 #' @param month string para o mês
 #' @param path diretório para salvar os dados baixados

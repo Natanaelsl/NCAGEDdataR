@@ -1,5 +1,6 @@
-#' NCAGEDdataR: Extração de dados do NOVO CAGED
+#' NCdata: Extração de dados do NOVO CAGED
 #'
+#' Realiza o extração dos dados, para o ano e mês especificados, retornando como lista de data.frame cada uma das abas do aquivo .xlsx dísponibilizado no site do Ministério do Trabalho - PDET.
 #'
 #' @param year valor numérico
 #' @param month string para o mês
