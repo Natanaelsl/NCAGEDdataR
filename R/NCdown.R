@@ -12,9 +12,8 @@
 #' # Definindo download para a pasta do diretório em uso
 #' NCdown(2023, "Janeiro", " ")
 #'
-#' # Poderia ser estraído da seguinte forma
+#' # Definindo pasta para salvar o arquivo
 #' # NCdown(2023, "Janeiro", "../documents/")
-#'
 #'
 #' @export
 NCdown <- function(year = NULL, month = NULL, path = NULL) {

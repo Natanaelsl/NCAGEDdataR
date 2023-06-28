@@ -23,8 +23,7 @@ Realiza o download do aquivo .xlsx no site do Ministério do Trabalho - PDET com
 # Definindo download para a pasta do diretório em uso
 NCdown(2023, "Janeiro", " ")
 
-# Poderia ser estraído da seguinte forma
+# Definindo pasta para salvar o arquivo
 # NCdown(2023, "Janeiro", "../documents/")
-
 
 }
