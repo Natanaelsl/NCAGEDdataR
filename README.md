@@ -88,3 +88,5 @@ de informações captadas dos sistemas eSocial, Caged e Empregador Web.
 A sintaxe da função `NCAGEDdataR` opera com a mesma lógica
 independentemente da base de interesse, o que torna intuitivo o download/extração
 de qualquer conjunto de dados usando uma única linha de código.
+
+> **_NOTA:_**  O referido pacote está em fase de construção podendo não ter todas as informações disponíveis para utilização.
