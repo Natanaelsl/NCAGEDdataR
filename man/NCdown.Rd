@@ -2,7 +2,7 @@
 % Please edit documentation in R/NCdown.R
 \name{NCdown}
 \alias{NCdown}
-\title{NCAGEDdataR: Download dos dados do NOVO CAGED}
+\title{NCdown: Download dos dados do NOVO CAGED}
 \usage{
 NCdown(year = NULL, month = NULL, path = NULL)
 }
@@ -17,5 +17,5 @@ NCdown(year = NULL, month = NULL, path = NULL)
 Salva a planilha do PDET com os dados do NOVO CAGED no diretório informado.
 }
 \description{
-'
+Realiza o download do aquivo .xlsx no site do Ministério do Trabalho - PDET com os dados do NOVO CAGED para o ano e mês especificados.
 }
