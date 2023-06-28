@@ -84,8 +84,8 @@ internacionais que contratam celetistas.
 O **Novo Caged** é a geração das estatísticas do emprego formal por meio
 de informações captadas dos sistemas eSocial, Caged e Empregador Web.
 
-### Carregando Dados
+### Vantagem
 
 A sintaxe da função `NCAGEDdataR` opera com a mesma lógica
-independentemente da base de interesse, o que torna intuitivo o download
+independentemente da base de interesse, o que torna intuitivo o download/extração
 de qualquer conjunto de dados usando uma única linha de código.
