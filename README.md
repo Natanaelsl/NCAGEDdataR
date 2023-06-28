@@ -9,10 +9,13 @@
 <img align="right" src="man/figures/NCAGEDdataR_logo1.png" alt="logo" width="180"><img align="right" src="man/figures/NCAGEDdataR_logo2.png" alt="logo" width="180">
 
 **NCAGEDdataR** é um pacote R que permite aos usuários acessar
-facilmente conjuntos de dados do **NOVO CAGED**. O pacote realiza a
-extração dos dados retornando como lista com cada uma das abas do aquivo
-.xlsx dísponibilizado no site do Ministério do Trabalho -
-**[PDET](http://pdet.mte.gov.br/novo-caged)**.
+facilmente conjuntos de dados do **NOVO CAGED**. 
+
+- `NCdown`: realiza o download do aquivo .xlsx no site do Ministério do Trabalho - **[PDET](http://pdet.mte.gov.br/novo-caged)** com os dados do NOVO CAGED para o ano e mês especificados.
+.xlsx dísponibilizado 
+- `NCdata`: realiza o extração dos dados, para o ano e mês especificados, retornando como lista de `data.frame` cada uma das abas do aquivo .xlsx dísponibilizado no site do Ministério do Trabalho - **[PDET](http://pdet.mte.gov.br/novo-caged)**.
+
+
 
 <br />
 
@@ -54,10 +57,15 @@ devtools::install_github("Natanaelsl/NCAGEDdataR")
 Este é um exemplo básico que mostra como resolver um problema comum:
 
 ``` r
+## Carregando o pacote
 library(NCAGEDdataR)
 
-## basic example code
+## Download do arquivo .xlsx do NOVO CAGED de Abril/2023 na pasta documentos.
+# NCdata(2023, "Abril", ".../Documents/")
+
+## Gerando lista de 'data.frame' do NOVO CAGED de Abril/2023.
 # NCdata(2023, "Abril")
+
 ```
 
 <!-- --- -->
