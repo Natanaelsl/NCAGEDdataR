@@ -19,3 +19,12 @@ Salva a planilha do PDET com os dados do NOVO CAGED no diretório informado.
 \description{
 Realiza o download do aquivo .xlsx no site do Ministério do Trabalho - PDET com os dados do NOVO CAGED para o ano e mês especificados.
 }
+\examples{
+# Definindo download para a pasta do diretório em uso
+NCdown(2023, "Janeiro", " ")
+
+# Poderia ser estraído da seguinte forma
+# NCdown(2023, "Janeiro", "../documents/")
+
+
+}

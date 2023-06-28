@@ -8,6 +8,14 @@
 #'
 #' @return Salva a planilha do PDET com os dados do NOVO CAGED no diretório informado.
 #'
+#' @examples
+#' # Definindo download para a pasta do diretório em uso
+#' NCdown(2023, "Janeiro", " ")
+#'
+#' # Poderia ser estraído da seguinte forma
+#' # NCdown(2023, "Janeiro", "../documents/")
+#'
+#'
 #' @export
 NCdown <- function(year = NULL, month = NULL, path = NULL) {
 
