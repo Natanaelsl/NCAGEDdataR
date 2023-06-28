@@ -6,10 +6,9 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-<img align="right" src="man/figures/NCAGEDdataR_logo1.png" alt="logo" width="180"><img align="right" src="man/figures/NCAGEDdataR_logo2.png" alt="logo" width="180">
+**NCAGEDdataR** é um pacote R que permite aos usuários acessar facilmente conjuntos de dados do **NOVO CAGED**. 
 
-**NCAGEDdataR** é um pacote R que permite aos usuários acessar
-facilmente conjuntos de dados do **NOVO CAGED**. 
+<img align="right" src="man/figures/NCAGEDdataR_logo1.png" alt="logo" width="180"><img align="right" src="man/figures/NCAGEDdataR_logo2.png" alt="logo" width="180">
 
 - `NCdown`: realiza o download do aquivo .xlsx no site do Ministério do Trabalho - **[PDET](http://pdet.mte.gov.br/novo-caged)** com os dados do NOVO CAGED para o ano e mês especificados.
 .xlsx dísponibilizado 
