@@ -170,90 +170,91 @@ NCdata <- function(year = NULL, month = NULL) {
           janitor::clean_names(.)
 
 
-        # # ESTRUTURANDO DADOS DA TABELA 6 (SHEET 6)
-        # df_t6 <- readxl::read_excel(tf,
-        #                             sheet = "Tabela 6",
-        #                             skip = 4,
-        #                             # progress = readxl_progress()
-        # ) %>%
-        #   dplyr::slice(1:c(nrow(.) - 6))
-        #
-        #
-        # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
-        # df_t6[1,1] <- "Estoque"
-        # est6 <- (stringr::str_detect(df_t6[1,], "Estoque"))
-        #
-        # estoque_6 <- df_t6[, as.vector(est6)] %>%
-        #   # select(c(1, 2, seq(6, ncol(.) - 8, 5))) %>%
-        #   dplyr::slice(-1) %>%
-        #   dplyr::mutate(Ultimos_12_meses = NA)
-        #
-        #
-        # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
-        # df_t6[1,1] <- "Admissões"
-        # adm6 <- (stringr::str_detect(df_t6[1,], "Admissões"))
-        #
-        # Admissoes_6 <- df_t6[, as.vector(adm6)] %>%
-        #   # select(c(1, 3, seq(7, ncol(.) - 8, 5), ncol(.)-7, ncol(.)-3)) %>%
-        #   dplyr::slice(-1) %>%
-        #   # setNames(c(colnames(estoque_6[,1:c(ncol(estoque_6)-2)]), "Acumulado do Ano", "Últimos 12 meses"))
-        #   setNames(c(colnames(estoque_6)))
-        #
-        #
-        # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
-        # df_t6[1,1] <- "Desligamentos"
-        # desl6 <- (stringr::str_detect(df_t6[1,], "Desligamentos"))
-        #
-        # Desligamentos_6 <- df_t6[, as.vector(desl6)] %>%
-        #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_6)))
-        #
-        #
-        # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
-        # df_t6[1,1] <- "Saldos"
-        # sal6 <- (stringr::str_detect(df_t6[1,], "Saldos"))
-        #
-        # Saldos_6 <- df_t6[, as.vector(sal6)] %>%
-        #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_6)))
-        #
-        #
-        # # REESTRUTURANDO TABELAS EM UMA ÚNICA
-        # Tabela_6 <- estoque_6 %>%
-        #   tidyr::pivot_longer(names_to = "Mês", values_to = "Estoque", -`Grupamento de Atividades Econômicas e Seção CNAE 2.0`) %>%
-        #   dplyr::bind_cols(
-        #     Admissoes_6 %>%
-        #       tidyr::pivot_longer(names_to = "Mês", values_to = "Admissoes", -`Grupamento de Atividades Econômicas e Seção CNAE 2.0`) %>%
-        #       dplyr::select(!1:2)
-        #   ) %>%
-        #   dplyr::bind_cols(
-        #     Desligamentos_6 %>%
-        #       tidyr::pivot_longer(names_to = "Mês", values_to = "Desligamentos", -`Grupamento de Atividades Econômicas e Seção CNAE 2.0`) %>%
-        #       dplyr::select(!1:2)
-        #   ) %>%
-        #   dplyr::bind_cols(
-        #     Saldos_6 %>%
-        #       tidyr::pivot_longer(names_to = "Mês", values_to = "Saldos", -`Grupamento de Atividades Econômicas e Seção CNAE 2.0`) %>%
-        #       dplyr::select(!1:2)
-        #   ) %>%
-        #   # dplyr::mutate(Mês = case_when(
-        #   #   Mês == paste0("Abril/", substr(Mês, nchar(Mês) - 4 + 1, nchar(Mês))) ~ gsub("Abril", "April", Mês),
-        #   #   TRUE ~ Mês
-        #   # )) %>%
-        #   # dplyr::mutate(Mês = case_when(
-        #   #   !Mês %in% c("Acumulado do Ano", "Últimos 12 meses") ~ lubridate::parse_date_time2(Mês, orders = c("%B/%Y", "%B%Y", "%b/%Y")),
-        #   #   TRUE ~ Mês)) %>%
-        #   dplyr::mutate(
-        #     Estoque = as.numeric(Estoque),
-        #     Admissoes = as.numeric(Admissoes),
-        #     Desligamentos = as.numeric(Desligamentos),
-        #     Saldos = as.numeric(Saldos)
-        #   ) %>%
-        #   # filter(`Grupamento de Atividades Econômicas e Seção CNAE 2.0` != "Não identificado***") %>%
-        #   tidyr::gather(Tipo, valores, -c(1:2))
-        #
-        #
-        #
+        # ESTRUTURANDO DADOS DA TABELA 6 (SHEET 6)
+        df_t6 <- readxl::read_excel(tf,
+                                    sheet = "Tabela 6",
+                                    skip = 4,
+                                    # progress = readxl_progress()
+        ) %>%
+          dplyr::slice(1:c(nrow(.) - 6)) %>%
+          janitor::clean_names(.)
+
+
+        # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
+        df_t6[1,1] <- "Estoque"
+        est6 <- (stringr::str_detect(df_t6[1,], "Estoque"))
+
+        estoque_6 <- df_t6[, as.vector(est6)] %>%
+          # select(c(1, 2, seq(6, ncol(.) - 8, 5))) %>%
+          dplyr::slice(-1) %>%
+          dplyr::mutate(Ultimos_12_meses = NA)
+
+
+        # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
+        df_t6[1,1] <- "Admiss"
+        adm6 <- (stringr::str_detect(df_t6[1,], "Admiss"))
+
+        Admissoes_6 <- df_t6[, as.vector(adm6)] %>%
+          # select(c(1, 3, seq(7, ncol(.) - 8, 5), ncol(.)-7, ncol(.)-3)) %>%
+          dplyr::slice(-1) %>%
+          # setNames(c(colnames(estoque_6[,1:c(ncol(estoque_6)-2)]), "Acumulado do Ano", "Últimos 12 meses"))
+          setNames(c(colnames(estoque_6)))
+
+
+        # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
+        df_t6[1,1] <- "Desligamentos"
+        desl6 <- (stringr::str_detect(df_t6[1,], "Desligamentos"))
+
+        Desligamentos_6 <- df_t6[, as.vector(desl6)] %>%
+          dplyr::slice(-1) %>%
+          setNames(c(colnames(estoque_6)))
+
+
+        # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
+        df_t6[1,1] <- "Saldos"
+        sal6 <- (stringr::str_detect(df_t6[1,], "Saldos"))
+
+        Saldos_6 <- df_t6[, as.vector(sal6)] %>%
+          dplyr::slice(-1) %>%
+          setNames(c(colnames(estoque_6)))
+
+
+        # REESTRUTURANDO TABELAS EM UMA ÚNICA
+        Tabela_6 <- estoque_6 %>%
+          tidyr::pivot_longer(names_to = "Mes", values_to = "Estoque", -grupamento_de_atividades_economicas_e_secao_cnae_2_0) %>%
+          dplyr::bind_cols(
+            Admissoes_6 %>%
+              tidyr::pivot_longer(names_to = "Mes", values_to = "Admissoes", -grupamento_de_atividades_economicas_e_secao_cnae_2_0) %>%
+              dplyr::select(!1:2)
+          ) %>%
+          dplyr::bind_cols(
+            Desligamentos_6 %>%
+              tidyr::pivot_longer(names_to = "Mes", values_to = "Desligamentos", -grupamento_de_atividades_economicas_e_secao_cnae_2_0) %>%
+              dplyr::select(!1:2)
+          ) %>%
+          dplyr::bind_cols(
+            Saldos_6 %>%
+              tidyr::pivot_longer(names_to = "Mes", values_to = "Saldos", -grupamento_de_atividades_economicas_e_secao_cnae_2_0) %>%
+              dplyr::select(!1:2)
+          ) %>%
+          # dplyr::mutate(Mês = case_when(
+          #   Mês == paste0("Abril/", substr(Mês, nchar(Mês) - 4 + 1, nchar(Mês))) ~ gsub("Abril", "April", Mês),
+          #   TRUE ~ Mês
+          # )) %>%
+          # dplyr::mutate(Mês = case_when(
+          #   !Mês %in% c("Acumulado do Ano", "Últimos 12 meses") ~ lubridate::parse_date_time2(Mês, orders = c("%B/%Y", "%B%Y", "%b/%Y")),
+          #   TRUE ~ Mês)) %>%
+          dplyr::mutate(
+            Estoque = as.numeric(Estoque),
+            Admissoes = as.numeric(Admissoes),
+            Desligamentos = as.numeric(Desligamentos),
+            Saldos = as.numeric(Saldos)
+          ) %>%
+          # filter(`Grupamento de Atividades Econômicas e Seção CNAE 2.0` != "Não identificado***") %>%
+          tidyr::gather(Tipo, valores, -c(1:2))
+
+
+
         # # ESTRUTURANDO DADOS DA TABELA 6.1 (SHEET 6.1)
         # df_t6.1 <- readxl::read_excel(tf,
         #                               sheet = "Tabela 6.1",
@@ -518,91 +519,92 @@ NCdata <- function(year = NULL, month = NULL) {
           janitor::clean_names(.)
 
 
-        # # ESTRUTURANDO DADOS DA TABELA 6 (SHEET 6)
-        # df_t6 <- readxl::read_excel(tf,
-        #                             sheet = "Tabela 6",
-        #                             skip = 4,
-        #                             # progress = readxl_progress()
-        # ) %>%
-        #   dplyr::slice(1:c(nrow(.) - 7))
-        #
-        #
-        # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
-        # df_t6[1,1] <- "Estoque"
-        # est6 <- (stringr::str_detect(df_t6[1,], "Estoque"))
-        #
-        # estoque_6 <- df_t6[, as.vector(est6)] %>%
-        #   # select(c(1, 2, seq(6, ncol(.) - 8, 5))) %>%
-        #   dplyr::slice(-1) %>%
-        #   dplyr::mutate(`Acumulado do Ano` = NA,
-        #          `Últimos 12 meses` = NA)
-        #
-        #
-        # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
-        # df_t6[1,1] <- "Admissões"
-        # adm6 <- (stringr::str_detect(df_t6[1,], "Admissões"))
-        #
-        # Admissoes_6 <- df_t6[, as.vector(adm6)] %>%
-        #   # select(c(1, 3, seq(7, ncol(.) - 8, 5), ncol(.)-7, ncol(.)-3)) %>%
-        #   dplyr::slice(-1) %>%
-        #   # setNames(c(colnames(estoque_6[,1:c(ncol(estoque_6)-2)]), "Acumulado do Ano", "Últimos 12 meses"))
-        #   setNames(c(colnames(estoque_6)))
-        #
-        #
-        # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
-        # df_t6[1,1] <- "Desligamentos"
-        # desl6 <- (stringr::str_detect(df_t6[1,], "Desligamentos"))
-        #
-        # Desligamentos_6 <- df_t6[, as.vector(desl6)] %>%
-        #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_6)))
-        #
-        #
-        # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
-        # df_t6[1,1] <- "Saldos"
-        # sal6 <- (stringr::str_detect(df_t6[1,], "Saldos"))
-        #
-        # Saldos_6 <- df_t6[, as.vector(sal6)] %>%
-        #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_6)))
-        #
-        #
-        # # REESTRUTURANDO TABELAS EM UMA ÚNICA
-        # Tabela_6 <- estoque_6 %>%
-        #   tidyr::pivot_longer(names_to = "Mês", values_to = "Estoque", -`Grupamento de Atividades Econômicas e Seção CNAE 2.0`) %>%
-        #   dplyr::bind_cols(
-        #     Admissoes_6 %>%
-        #       tidyr::pivot_longer(names_to = "Mês", values_to = "Admissoes", -`Grupamento de Atividades Econômicas e Seção CNAE 2.0`) %>%
-        #       dplyr::select(!1:2)
-        #   ) %>%
-        #   dplyr::bind_cols(
-        #     Desligamentos_6 %>%
-        #       tidyr::pivot_longer(names_to = "Mês", values_to = "Desligamentos", -`Grupamento de Atividades Econômicas e Seção CNAE 2.0`) %>%
-        #       dplyr::select(!1:2)
-        #   ) %>%
-        #   dplyr::bind_cols(
-        #     Saldos_6 %>%
-        #       tidyr::pivot_longer(names_to = "Mês", values_to = "Saldos", -`Grupamento de Atividades Econômicas e Seção CNAE 2.0`) %>%
-        #       dplyr::select(!1:2)
-        #   ) %>%
-        #   # dplyr::mutate(Mês = case_when(
-        #   #   Mês == paste0("Abril/", substr(Mês, nchar(Mês) - 4 + 1, nchar(Mês))) ~ gsub("Abril", "April", Mês),
-        #   #   TRUE ~ Mês
-        #   # )) %>%
-        #   # dplyr::mutate(Mês = case_when(
-        #   #   !Mês %in% c("Acumulado do Ano", "Últimos 12 meses") ~ lubridate::parse_date_time2(Mês, orders = c("%B/%Y", "%B%Y", "%b/%Y")),
-        #   #   TRUE ~ Mês)) %>%
-        #   dplyr::mutate(
-        #     Estoque = as.numeric(Estoque),
-        #     Admissoes = as.numeric(Admissoes),
-        #     Desligamentos = as.numeric(Desligamentos),
-        #     Saldos = as.numeric(Saldos)
-        #   ) %>%
-        #   # filter(`Grupamento de Atividades Econômicas e Seção CNAE 2.0` != "Não identificado***") %>%
-        #   tidyr::gather(Tipo, valores, -c(1:2))
-        #
-        #
-        #
+        # ESTRUTURANDO DADOS DA TABELA 6 (SHEET 6)
+        df_t6 <- readxl::read_excel(tf,
+                                    sheet = "Tabela 6",
+                                    skip = 4,
+                                    # progress = readxl_progress()
+        ) %>%
+          dplyr::slice(1:c(nrow(.) - 7)) %>%
+          janitor::clean_names(.)
+
+
+        # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
+        df_t6[1,1] <- "Estoque"
+        est6 <- (stringr::str_detect(df_t6[1,], "Estoque"))
+
+        estoque_6 <- df_t6[, as.vector(est6)] %>%
+          # select(c(1, 2, seq(6, ncol(.) - 8, 5))) %>%
+          dplyr::slice(-1) %>%
+          dplyr::mutate(`Acumulado do Ano` = NA,
+                 `Ultimos 12 meses` = NA)
+
+
+        # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
+        df_t6[1,1] <- "Admiss"
+        adm6 <- (stringr::str_detect(df_t6[1,], "Admiss"))
+
+        Admissoes_6 <- df_t6[, as.vector(adm6)] %>%
+          # select(c(1, 3, seq(7, ncol(.) - 8, 5), ncol(.)-7, ncol(.)-3)) %>%
+          dplyr::slice(-1) %>%
+          # setNames(c(colnames(estoque_6[,1:c(ncol(estoque_6)-2)]), "Acumulado do Ano", "Últimos 12 meses"))
+          setNames(c(colnames(estoque_6)))
+
+
+        # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
+        df_t6[1,1] <- "Desligamentos"
+        desl6 <- (stringr::str_detect(df_t6[1,], "Desligamentos"))
+
+        Desligamentos_6 <- df_t6[, as.vector(desl6)] %>%
+          dplyr::slice(-1) %>%
+          setNames(c(colnames(estoque_6)))
+
+
+        # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
+        df_t6[1,1] <- "Saldos"
+        sal6 <- (stringr::str_detect(df_t6[1,], "Saldos"))
+
+        Saldos_6 <- df_t6[, as.vector(sal6)] %>%
+          dplyr::slice(-1) %>%
+          setNames(c(colnames(estoque_6)))
+
+
+        # REESTRUTURANDO TABELAS EM UMA ÚNICA
+        Tabela_6 <- estoque_6 %>%
+          tidyr::pivot_longer(names_to = "Mes", values_to = "Estoque", -grupamento_de_atividades_economicas_e_secao_cnae_2_0) %>%
+          dplyr::bind_cols(
+            Admissoes_6 %>%
+              tidyr::pivot_longer(names_to = "Mes", values_to = "Admissoes", -grupamento_de_atividades_economicas_e_secao_cnae_2_0) %>%
+              dplyr::select(!1:2)
+          ) %>%
+          dplyr::bind_cols(
+            Desligamentos_6 %>%
+              tidyr::pivot_longer(names_to = "Mes", values_to = "Desligamentos", -grupamento_de_atividades_economicas_e_secao_cnae_2_0) %>%
+              dplyr::select(!1:2)
+          ) %>%
+          dplyr::bind_cols(
+            Saldos_6 %>%
+              tidyr::pivot_longer(names_to = "Mes", values_to = "Saldos", -grupamento_de_atividades_economicas_e_secao_cnae_2_0) %>%
+              dplyr::select(!1:2)
+          ) %>%
+          # dplyr::mutate(Mês = case_when(
+          #   Mês == paste0("Abril/", substr(Mês, nchar(Mês) - 4 + 1, nchar(Mês))) ~ gsub("Abril", "April", Mês),
+          #   TRUE ~ Mês
+          # )) %>%
+          # dplyr::mutate(Mês = case_when(
+          #   !Mês %in% c("Acumulado do Ano", "Últimos 12 meses") ~ lubridate::parse_date_time2(Mês, orders = c("%B/%Y", "%B%Y", "%b/%Y")),
+          #   TRUE ~ Mês)) %>%
+          dplyr::mutate(
+            Estoque = as.numeric(Estoque),
+            Admissoes = as.numeric(Admissoes),
+            Desligamentos = as.numeric(Desligamentos),
+            Saldos = as.numeric(Saldos)
+          ) %>%
+          # filter(`Grupamento de Atividades Econômicas e Seção CNAE 2.0` != "Não identificado***") %>%
+          tidyr::gather(Tipo, valores, -c(1:2))
+
+
+
         # # ESTRUTURANDO DADOS DA TABELA 6.1 (SHEET 6.1)
         # df_t6.1 <- readxl::read_excel(tf,
         #                               sheet = "Tabela 6.1",
@@ -848,8 +850,8 @@ NCdata <- function(year = NULL, month = NULL) {
       cli::cli_progress_step("\nOrganizando dados e criando lista de 'Data.frames'!", spinner = TRUE)
 
       list <- list(Tabela_4=Tabela_4,
-                   Tabela_5=Tabela_5
-                   # Tabela_6=Tabela_6,
+                   Tabela_5=Tabela_5,
+                   Tabela_6=Tabela_6
                    # Tabela_6.1=Tabela_6.1,
                    # Tabela_7=Tabela_7,
                    # Tabela_7.1=Tabela_7.1
