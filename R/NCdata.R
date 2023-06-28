@@ -8,6 +8,7 @@
 #' @return Uma lista de data.frame para cada um dos 'sheet' da planilha do NOVO CAGED.
 #'
 #' @examples
+#' # Extraindo dados de Janeiro/2023
 #' NCdata(2023, "Janeiro")
 #'
 #' @export

@@ -18,6 +18,7 @@ Uma lista de data.frame para cada um dos 'sheet' da planilha do NOVO CAGED.
 Realiza o extração dos dados, para o ano e mês especificados, retornando como lista de data.frame cada uma das abas do aquivo .xlsx dísponibilizado no site do Ministério do Trabalho - PDET.
 }
 \examples{
+# Extraindo dados de Janeiro/2023
 NCdata(2023, "Janeiro")
 
 }
