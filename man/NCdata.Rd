@@ -12,7 +12,7 @@ NCdata(year = NULL, month = NULL)
 \item{month}{string para o mês}
 }
 \value{
-Uma lista de data.frame
+Uma lista de data.frame para cada um dos 'sheet' da planilha do NOVO CAGED.
 }
 \description{
 NCAGEDdataR: Extração de dados do NOVO CAGED

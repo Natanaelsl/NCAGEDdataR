@@ -5,7 +5,7 @@
 #' @param month string para o mês
 #' @param path diretório para salvar os dados baixados
 #'
-#' @return Retorna a planilha do PDET com os dados do NOVO CAGED
+#' @return Salva a planilha do PDET com os dados do NOVO CAGED no diretório informado.
 #'
 #' @export
 NCdown <- function(year = NULL, month = NULL, path = NULL) {

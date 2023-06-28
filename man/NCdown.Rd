@@ -14,7 +14,7 @@ NCdown(year = NULL, month = NULL, path = NULL)
 \item{path}{diretório para salvar os dados baixados}
 }
 \value{
-Retorna a planilha do PDET com os dados do NOVO CAGED
+Salva a planilha do PDET com os dados do NOVO CAGED no diretório informado.
 }
 \description{
 '

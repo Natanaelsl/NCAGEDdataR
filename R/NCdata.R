@@ -4,7 +4,7 @@
 #' @param year valor numérico
 #' @param month string para o mês
 #'
-#' @return Uma lista de data.frame
+#' @return Uma lista de data.frame para cada um dos 'sheet' da planilha do NOVO CAGED.
 #'
 #' @examples
 #' NCdata(2023, "Janeiro")
