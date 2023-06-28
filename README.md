@@ -11,7 +11,6 @@
 <img align="right" src="man/figures/NCAGEDdataR_logo1.png" alt="logo" width="180"><img align="right" src="man/figures/NCAGEDdataR_logo2.png" alt="logo" width="180">
 
 - `NCdown`: realiza o download do aquivo .xlsx no site do Ministério do Trabalho - **[PDET](http://pdet.mte.gov.br/novo-caged)** com os dados do NOVO CAGED para o ano e mês especificados.
-.xlsx dísponibilizado 
 - `NCdata`: realiza o extração dos dados, para o ano e mês especificados, retornando como lista de `data.frame` cada uma das abas do aquivo .xlsx dísponibilizado no site do Ministério do Trabalho - **[PDET](http://pdet.mte.gov.br/novo-caged)**.
 
 
