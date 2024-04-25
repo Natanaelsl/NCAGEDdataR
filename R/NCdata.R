@@ -2,10 +2,10 @@
 #'
 #' Realiza o extração dos dados, para o ano e mês especificados, retornando como lista de data.frame cada uma das abas do aquivo .xlsx dísponibilizado no site do Ministério do Trabalho - PDET.
 #'
-#' @param year valor numérico
-#' @param month string para o mês
+#' @param year Ano (valor numérico)
+#' @param month Mês (string)
 #'
-#' @return Uma lista de data.frame para cada um dos 'sheet' da planilha do NOVO CAGED.
+#' @return Uma lista de data.frames para cada uma das abas da planilha do NOVO CAGED.
 #'
 #' @examples
 #' # Extraindo dados de Janeiro/2023
@@ -22,10 +22,9 @@ NCdata <- function(year = NULL, month = NULL) {
 
   suppressWarnings({
 
-    cli::cli_progress_step("Preparando!", spinner = TRUE)
 
-      if (is.null(year) | is.null(month)) {
-      cli::cli_alert_danger(paste0("O ano e m\\u00eas devem ser fornecidoS."))
+    if (is.null(year) | is.null(month)) {
+      cli::cli_alert_danger(iconv("O ano e mês devem ser fornecidos.", "UTF-8", "ASCII", sub = "c99"))
       return(NULL)
     }
     if (year < 2020) {
@@ -33,14 +32,15 @@ NCdata <- function(year = NULL, month = NULL) {
       return(NULL)
     }
     if (year == 2020) {
-      cli::cli_div(theme = list(span.emph = list(color = "orange")))
-      cli::cli_text("{.emph Desculpa, a extra\\u00e7\\u00e3o dO ano de 2020 est\\u00e1 em fase de constru\\u00e7\\u00e3o.}")
-      cli::cli_end()
-      # cli::cli_alert_info("Desculpa, a extração dO ano de 2020 está em fase de construção.")
+      # cli::cli_div(theme = list(span.emph = list(color = "orange")))
+      # cli::cli_text("{.emph Desculpa, a extra\\u00e7\\u00e3o dOs dados do ano de 2020 est\\u00e1 em fase de constru\\u00e7\\u00e3o.}")
+      # cli::cli_end()
+      cli::cli_alert_info(iconv("Desculpa, a extração dO ano de 2020 está em fase de construção.", "UTF-8", "ASCII", sub = "c99"))
+      cli::cli_alert_danger("Preparando!")
       return(NULL)
     }
     if (year > timeDate::getRmetricsOptions("currentYear")) {
-      # cli::cli_alert_danger("O ano não pode ser maior que o ano atual.")
+      cli::cli_alert_danger(iconv("O ano não pode ser maior que o ano atual.", "UTF-8", "ASCII", sub = "c99"))
       return(NULL)
     }
 
@@ -51,13 +51,16 @@ NCdata <- function(year = NULL, month = NULL) {
     # CONDIÇÃO PARA OS ÚLTIMOS DADOS DISPONIBILIZADOS
     if (RCurl::url.exists(HtmlLink) == TRUE) {
 
+      cli::cli_progress_step("Preparando!", spinner = TRUE)
+
       cli::cli_progress_step("Definindo caminho aos dados", spinner = TRUE)
       HTMLContent <- rvest::read_html(HtmlLink)
-      xlsx <- HTMLContent %>% rvest::html_nodes("[class='moduletable     listaservico ']") %>%
+      xlsx <- HTMLContent %>%
+        rvest::html_nodes("[class='moduletable     listaservico ']") %>%
         rvest::html_elements("a") %>%
         rvest::html_attr("href") %>% .[[3]]
 
-      url <- paste0("http://pdet.mte.gov.br", xlsx)
+      url <- paste0("http://pdet.mte.gov.br",xlsx)
 
       # cli::cli_progress_step("Começando o Download dos Dados CAGED", spinner = TRUE)
       cli::cli_progress_step("Download realizado!", spinner = TRUE)
@@ -91,7 +94,7 @@ NCdata <- function(year = NULL, month = NULL) {
           rvest::html_elements("a") %>%
           rvest::html_attr("href") %>% .[[3]]
 
-        url <- paste0("http://pdet.mte.gov.br", xlsx2)
+        url <- paste0("http://pdet.mte.gov.br",xlsx2)
 
         # cli::cli_progress_step("Começando o Download dos Dados CAGED", spinner = TRUE)
         cli::cli_progress_step("Download realizado!", spinner = TRUE)
@@ -106,7 +109,7 @@ NCdata <- function(year = NULL, month = NULL) {
       }
       if(abjutils::rm_accent(tolower({{month}})) != abjutils::rm_accent(tolower({{month1}}))){
         # cli::cli_alert_info("Possível erro na declaração das informações de ano e mês! \nVerificar dados informados.\n")
-        pesquisa <- gtools::ask(paste("\nUtilizar \\u00faltima pesquisa dispon\\u00edvel? (", month1, ") \nInforme 'sim' ou 'n\\u00e3o'!"))
+        pesquisa <- gtools::ask(paste(iconv("\nUtilizar ultima pesquisa disponível? (", "UTF-8", "ASCII", sub = "c99"), month1, iconv(") \nInforme 'sim' ou 'não'!", "UTF-8", "ASCII", sub = "c99")))
         pesquisa <- as.character(pesquisa)
 
         if(pesquisa == "sim"){
@@ -116,7 +119,7 @@ NCdata <- function(year = NULL, month = NULL) {
             rvest::html_elements("a") %>%
             rvest::html_attr("href") %>% .[[3]]
 
-          url <- paste0("http://pdet.mte.gov.br", xlsx2)
+          url <- paste0("http://pdet.mte.gov.br",xlsx2)
 
           # cli::cli_progress_step("Começando o Download dos Dados CAGED", spinner = TRUE)
           cli::cli_progress_step("Download realizado!", spinner = TRUE)
@@ -129,9 +132,9 @@ NCdata <- function(year = NULL, month = NULL) {
           cli::cli_progress_done()
 
         }
-        if(pesquisa == "n\\u00e3o"){
+        if(pesquisa == iconv("não", "UTF-8", "ASCII", sub = "byte")){
 
-          cli::cli_alert_danger("Tudo bem, verifique ano e m\\u00eas informados!")
+          cli::cli_alert_danger(iconv("Tudo bem, verifique ano e mês informados!", "UTF-8", "ASCII", sub = "c99"))
 
         }
       }
@@ -152,7 +155,7 @@ NCdata <- function(year = NULL, month = NULL) {
                                        progress = readxl::readxl_progress()
         ) %>%
           dplyr::slice(1:c(nrow(.) - 3)) %>%
-          setNames(c(colnames(.)[1], .[1, -1])) %>%
+          stats::setNames(c(colnames(.)[1], .[1, -1])) %>%
           dplyr::slice(-1) %>%
           janitor::clean_names(.) %>%
           # filter(`Grupamento de Atividades Econômicas e Seção CNAE 2.0` != "Não identificado") %>%
@@ -199,8 +202,8 @@ NCdata <- function(year = NULL, month = NULL) {
         Admissoes_6 <- df_t6[, as.vector(adm6)] %>%
           # select(c(1, 3, seq(7, ncol(.) - 8, 5), ncol(.)-7, ncol(.)-3)) %>%
           dplyr::slice(-1) %>%
-          # setNames(c(colnames(estoque_6[,1:c(ncol(estoque_6)-2)]), "Acumulado do Ano", "Últimos 12 meses"))
-          setNames(c(colnames(estoque_6)))
+          # stats::setNames(c(colnames(estoque_6[,1:c(ncol(estoque_6)-2)]), "Acumulado do Ano", "Últimos 12 meses"))
+          stats::setNames(c(colnames(estoque_6)))
 
 
         # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
@@ -209,7 +212,7 @@ NCdata <- function(year = NULL, month = NULL) {
 
         Desligamentos_6 <- df_t6[, as.vector(desl6)] %>%
           dplyr::slice(-1) %>%
-          setNames(c(colnames(estoque_6)))
+          stats::setNames(c(colnames(estoque_6)))
 
 
         # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
@@ -218,7 +221,7 @@ NCdata <- function(year = NULL, month = NULL) {
 
         Saldos_6 <- df_t6[, as.vector(sal6)] %>%
           dplyr::slice(-1) %>%
-          setNames(c(colnames(estoque_6)))
+          stats::setNames(c(colnames(estoque_6)))
 
 
         # REESTRUTURANDO TABELAS EM UMA ÚNICA
@@ -281,7 +284,7 @@ NCdata <- function(year = NULL, month = NULL) {
         #
         # Admissoes_6.1 <- df_t6.1[, as.vector(adm6.1)] %>%
         #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_6.1)))
+        #   stats::setNames(c(colnames(estoque_6.1)))
         #
         #
         # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
@@ -290,7 +293,7 @@ NCdata <- function(year = NULL, month = NULL) {
         #
         # Desligamentos_6.1 <- df_t6.1[, as.vector(desl6.1)] %>%
         #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_6.1)))
+        #   stats::setNames(c(colnames(estoque_6.1)))
         #
         #
         # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
@@ -299,7 +302,7 @@ NCdata <- function(year = NULL, month = NULL) {
         #
         # Saldos_6.1 <- df_t6.1[, as.vector(sal6.1)] %>%
         #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_6.1)))
+        #   stats::setNames(c(colnames(estoque_6.1)))
         #
         #
         # # REESTRUTURANDO TABELAS EM UMA ÚNICA
@@ -361,7 +364,7 @@ NCdata <- function(year = NULL, month = NULL) {
         #
         # Admissoes_7 <- df_t7[, as.vector(adm7)] %>%
         #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_7)))
+        #   stats::setNames(c(colnames(estoque_7)))
         #
         #
         # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
@@ -370,7 +373,7 @@ NCdata <- function(year = NULL, month = NULL) {
         #
         # Desligamentos_7 <- df_t7[, as.vector(desl7)] %>%
         #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_7)))
+        #   stats::setNames(c(colnames(estoque_7)))
         #
         #
         # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
@@ -379,7 +382,7 @@ NCdata <- function(year = NULL, month = NULL) {
         #
         # Saldos_7 <- df_t7[, as.vector(sal7)] %>%
         #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_7)))
+        #   stats::setNames(c(colnames(estoque_7)))
         #
         #
         # # REESTRUTURANDO TABELAS EM UMA ÚNICA
@@ -439,7 +442,7 @@ NCdata <- function(year = NULL, month = NULL) {
         #
         # Admissoes_7.1 <- df_t7.1[, as.vector(adm7.1)] %>%
         #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_7.1)))
+        #   stats::setNames(c(colnames(estoque_7.1)))
         #
         #
         # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
@@ -448,7 +451,7 @@ NCdata <- function(year = NULL, month = NULL) {
         #
         # Desligamentos_7.1 <- df_t7.1[, as.vector(desl7.1)] %>%
         #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_7.1)))
+        #   stats::setNames(c(colnames(estoque_7.1)))
         #
         #
         # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
@@ -457,7 +460,7 @@ NCdata <- function(year = NULL, month = NULL) {
         #
         # Saldos_7.1 <- df_t7.1[, as.vector(sal7.1)] %>%
         #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_7.1)))
+        #   stats::setNames(c(colnames(estoque_7.1)))
         #
         #
         # # REESTRUTURANDO TABELAS EM UMA ÚNICA
@@ -501,7 +504,7 @@ NCdata <- function(year = NULL, month = NULL) {
                                        progress = readxl::readxl_progress()
         ) %>%
           dplyr::slice(1:c(nrow(.) - 3)) %>%
-          setNames(c(colnames(.)[1], .[1, -1])) %>%
+          stats::setNames(c(colnames(.)[1], .[1, -1])) %>%
           dplyr::slice(-1) %>%
           janitor::clean_names(.) %>%
           # filter(`Grupamento de Atividades Econômicas e Seção CNAE 2.0` != "Não identificado") %>%
@@ -549,8 +552,8 @@ NCdata <- function(year = NULL, month = NULL) {
         Admissoes_6 <- df_t6[, as.vector(adm6)] %>%
           # select(c(1, 3, seq(7, ncol(.) - 8, 5), ncol(.)-7, ncol(.)-3)) %>%
           dplyr::slice(-1) %>%
-          # setNames(c(colnames(estoque_6[,1:c(ncol(estoque_6)-2)]), "Acumulado do Ano", "Últimos 12 meses"))
-          setNames(c(colnames(estoque_6)))
+          # stats::setNames(c(colnames(estoque_6[,1:c(ncol(estoque_6)-2)]), "Acumulado do Ano", "Últimos 12 meses"))
+          stats::setNames(c(colnames(estoque_6)))
 
 
         # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
@@ -559,7 +562,7 @@ NCdata <- function(year = NULL, month = NULL) {
 
         Desligamentos_6 <- df_t6[, as.vector(desl6)] %>%
           dplyr::slice(-1) %>%
-          setNames(c(colnames(estoque_6)))
+          stats::setNames(c(colnames(estoque_6)))
 
 
         # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
@@ -568,7 +571,7 @@ NCdata <- function(year = NULL, month = NULL) {
 
         Saldos_6 <- df_t6[, as.vector(sal6)] %>%
           dplyr::slice(-1) %>%
-          setNames(c(colnames(estoque_6)))
+          stats::setNames(c(colnames(estoque_6)))
 
 
         # REESTRUTURANDO TABELAS EM UMA ÚNICA
@@ -632,7 +635,7 @@ NCdata <- function(year = NULL, month = NULL) {
         #
         # Admissoes_6.1 <- df_t6.1[, as.vector(adm6.1)] %>%
         #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_6.1)))
+        #   stats::setNames(c(colnames(estoque_6.1)))
         #
         #
         # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
@@ -641,7 +644,7 @@ NCdata <- function(year = NULL, month = NULL) {
         #
         # Desligamentos_6.1 <- df_t6.1[, as.vector(desl6.1)] %>%
         #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_6.1)))
+        #   stats::setNames(c(colnames(estoque_6.1)))
         #
         #
         # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
@@ -650,7 +653,7 @@ NCdata <- function(year = NULL, month = NULL) {
         #
         # Saldos_6.1 <- df_t6.1[, as.vector(sal6.1)] %>%
         #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_6.1)))
+        #   stats::setNames(c(colnames(estoque_6.1)))
         #
         #
         # # REESTRUTURANDO TABELAS EM UMA ÚNICA
@@ -713,7 +716,7 @@ NCdata <- function(year = NULL, month = NULL) {
         #
         # Admissoes_7 <- df_t7[, as.vector(adm7)] %>%
         #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_7)))
+        #   stats::setNames(c(colnames(estoque_7)))
         #
         #
         # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
@@ -722,7 +725,7 @@ NCdata <- function(year = NULL, month = NULL) {
         #
         # Desligamentos_7 <- df_t7[, as.vector(desl7)] %>%
         #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_7)))
+        #   stats::setNames(c(colnames(estoque_7)))
         #
         #
         # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
@@ -731,7 +734,7 @@ NCdata <- function(year = NULL, month = NULL) {
         #
         # Saldos_7 <- df_t7[, as.vector(sal7)] %>%
         #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_7)))
+        #   stats::setNames(c(colnames(estoque_7)))
         #
         #
         # # REESTRUTURANDO TABELAS EM UMA ÚNICA
@@ -792,7 +795,7 @@ NCdata <- function(year = NULL, month = NULL) {
         #
         # Admissoes_7.1 <- df_t7.1[, as.vector(adm7.1)] %>%
         #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_7.1)))
+        #   stats::setNames(c(colnames(estoque_7.1)))
         #
         #
         # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
@@ -801,7 +804,7 @@ NCdata <- function(year = NULL, month = NULL) {
         #
         # Desligamentos_7.1 <- df_t7.1[, as.vector(desl7.1)] %>%
         #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_7.1)))
+        #   stats::setNames(c(colnames(estoque_7.1)))
         #
         #
         # # DEFININDO PARÊMETRO PARA SELEÇÃO DAS COLUNAS
@@ -810,7 +813,7 @@ NCdata <- function(year = NULL, month = NULL) {
         #
         # Saldos_7.1 <- df_t7.1[, as.vector(sal7.1)] %>%
         #   dplyr::slice(-1) %>%
-        #   setNames(c(colnames(estoque_7.1)))
+        #   stats::setNames(c(colnames(estoque_7.1)))
         #
         #
         # # REESTRUTURANDO TABELAS EM UMA ÚNICA
@@ -859,13 +862,14 @@ NCdata <- function(year = NULL, month = NULL) {
                    # Tabela_7.1=Tabela_7.1
                    )
 
-      nome <- Tabela_5 %>% dplyr::mutate(estoque = as.numeric(.$estoque)) %>% na.omit() %>% tail(1)
-      nome <- tail(nome$mes, 1)
+      nome <- Tabela_5 %>% dplyr::mutate(estoque = as.numeric(.$estoque)) %>% stats::na.omit() %>% utils::tail(1)
+      nome <- utils::tail(nome$mes, 1)
       # nome <- paste(mês,ano, sep = "_")
-      return(assign(nome, list, envir=.GlobalEnv))
+      return(assign(glue::glue("{nome}"), list, envir=.GlobalEnv))
       # names(objects(pattern = nome)) <- c("Tabela_4", "Tabela_6", "Tabela_6.1")
       # names(glue::glue("{nome}")) <- c("Tabela_4", "Tabela_6", "Tabela_6.1")
 
+      cli::cli_progress_done()
 
     }) #suppressMessages
 

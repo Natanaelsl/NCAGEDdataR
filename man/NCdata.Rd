@@ -7,12 +7,12 @@
 NCdata(year = NULL, month = NULL)
 }
 \arguments{
-\item{year}{valor numérico}
+\item{year}{Ano (valor numérico)}
 
-\item{month}{string para o mês}
+\item{month}{Mês (string)}
 }
 \value{
-Uma lista de data.frame para cada um dos 'sheet' da planilha do NOVO CAGED.
+Uma lista de data.frames para cada uma das abas da planilha do NOVO CAGED.
 }
 \description{
 Realiza o extração dos dados, para o ano e mês especificados, retornando como lista de data.frame cada uma das abas do aquivo .xlsx dísponibilizado no site do Ministério do Trabalho - PDET.
