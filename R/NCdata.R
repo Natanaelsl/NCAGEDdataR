@@ -1,18 +1,24 @@
-#' NCdata: Extração de dados do NOVO CAGED
+#' NCdata: Extração de dados do Novo CAGED
 #'
-#' Realiza o extração dos dados, para o ano e mês especificados, retornando como lista de data.frame cada uma das abas do aquivo .xlsx dísponibilizado no site do Ministério do Trabalho - PDET.
+#' @description
+#' `r lifecycle::badge("maturing")`
 #'
-#' @param year Ano (valor numérico)
-#' @param month Mês (string)
+#' Realiza o extração dos dados, para o ano e mês especificados, retornando uma lista de 'data.frame' cada uma das abas do aquivo .xlsx dísponibilizado no site do Ministério do Trabalho - PDET.
 #'
-#' @return Uma lista de data.frames para cada uma das abas da planilha do NOVO CAGED.
-#'
-#' @examples
-#' # Extraindo dados de Janeiro/2023
-#' NCdata(2023, "Janeiro")
-#'
+#' @inheritParams expand
+#' @param year Parâmetro numérico. Determina qual o ano do Novo CAGED que será extraido. Deve ser selecionado somente um ano.
+#' @param month Parâmetro 'string'. Determina o mês da pesquisa de interesse. Deve ser selecionado somente um mês. Ex.: "Junho".
+#' @inheritParams NCdata_
 #' @export
-
+#' @examples
+#' # install.packages("devtools")
+#' # devtools::install_github("Natanaelsl/NCAGEDdataR")
+#'
+#' # Carregando o pacote
+#' # library(NCAGEDdataR)
+#'
+#' # Extraindo dados de Junho/2023
+#' NCdata(2023, "Junho")
 NCdata <- function(year = NULL, month = NULL) {
 
   # stringi::stri_escape_unicode("ê")
@@ -22,25 +28,26 @@ NCdata <- function(year = NULL, month = NULL) {
 
   suppressWarnings({
 
+    # iconv("O ano e mês devem ser fornecidos.", "UTF-8", "ASCII", sub = "c99")
 
     if (is.null(year) | is.null(month)) {
-      cli::cli_alert_danger(iconv("O ano e mês devem ser fornecidos.", "UTF-8", "ASCII", sub = "c99"))
+      cli::cli_alert_danger("O ano e mês devem ser fornecidos.")
       return(NULL)
     }
     if (year < 2020) {
-      cli::cli_alert_danger("O ano deve ser maior ou igual a 2020.")
-      return(NULL)
+      m2 <- cli::cli_alert_danger("O ano deve ser maior ou igual a 2020.")
+      return(m2)
     }
     if (year == 2020) {
       # cli::cli_div(theme = list(span.emph = list(color = "orange")))
       # cli::cli_text("{.emph Desculpa, a extra\\u00e7\\u00e3o dOs dados do ano de 2020 est\\u00e1 em fase de constru\\u00e7\\u00e3o.}")
       # cli::cli_end()
-      cli::cli_alert_info(iconv("Desculpa, a extração dO ano de 2020 está em fase de construção.", "UTF-8", "ASCII", sub = "c99"))
+      cli::cli_alert_info("Desculpa, a extração dO ano de 2020 está em fase de construção.")
       cli::cli_alert_danger("Preparando!")
       return(NULL)
     }
     if (year > timeDate::getRmetricsOptions("currentYear")) {
-      cli::cli_alert_danger(iconv("O ano não pode ser maior que o ano atual.", "UTF-8", "ASCII", sub = "c99"))
+      cli::cli_alert_danger("O ano não pode ser maior que o ano atual.")
       return(NULL)
     }
 
@@ -109,7 +116,7 @@ NCdata <- function(year = NULL, month = NULL) {
       }
       if(abjutils::rm_accent(tolower({{month}})) != abjutils::rm_accent(tolower({{month1}}))){
         # cli::cli_alert_info("Possível erro na declaração das informações de ano e mês! \nVerificar dados informados.\n")
-        pesquisa <- gtools::ask(paste(iconv("\nUtilizar ultima pesquisa disponível? (", "UTF-8", "ASCII", sub = "c99"), month1, iconv(") \nInforme 'sim' ou 'não'!", "UTF-8", "ASCII", sub = "c99")))
+        pesquisa <- gtools::ask(paste("\nUtilizar ultima pesquisa disponível? (", month1, ") \nInforme 'sim' ou 'não'!"))
         pesquisa <- as.character(pesquisa)
 
         if(pesquisa == "sim"){
@@ -132,9 +139,9 @@ NCdata <- function(year = NULL, month = NULL) {
           cli::cli_progress_done()
 
         }
-        if(pesquisa == iconv("não", "UTF-8", "ASCII", sub = "byte")){
+        if(pesquisa == "não"){
 
-          cli::cli_alert_danger(iconv("Tudo bem, verifique ano e mês informados!", "UTF-8", "ASCII", sub = "c99"))
+          cli::cli_alert_danger("Tudo bem, verifique ano e mês informados!")
 
         }
       }

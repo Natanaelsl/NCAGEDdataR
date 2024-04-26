@@ -2,23 +2,27 @@
 % Please edit documentation in R/NCdata.R
 \name{NCdata}
 \alias{NCdata}
-\title{NCdata: Extração de dados do NOVO CAGED}
+\title{NCdata: Extração de dados do Novo CAGED}
 \usage{
 NCdata(year = NULL, month = NULL)
 }
 \arguments{
-\item{year}{Ano (valor numérico)}
+\item{year}{Parâmetro numérico. Determina qual o ano do Novo CAGED que será extraido. Deve ser selecionado somente um ano.}
 
-\item{month}{Mês (string)}
-}
-\value{
-Uma lista de data.frames para cada uma das abas da planilha do NOVO CAGED.
+\item{month}{Parâmetro 'string'. Determina o mês da pesquisa de interesse. Deve ser selecionado somente um mês. Ex.: "Junho".}
 }
 \description{
-Realiza o extração dos dados, para o ano e mês especificados, retornando como lista de data.frame cada uma das abas do aquivo .xlsx dísponibilizado no site do Ministério do Trabalho - PDET.
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}}
+
+Realiza o extração dos dados, para o ano e mês especificados, retornando uma lista de 'data.frame' cada uma das abas do aquivo .xlsx dísponibilizado no site do Ministério do Trabalho - PDET.
 }
 \examples{
-# Extraindo dados de Janeiro/2023
-NCdata(2023, "Janeiro")
+# install.packages("devtools")
+# devtools::install_github("Natanaelsl/NCAGEDdataR")
 
+# Carregando o pacote
+# library(NCAGEDdataR)
+
+# Extraindo dados de Junho/2023
+NCdata(2023, "Junho")
 }

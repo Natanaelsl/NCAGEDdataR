@@ -2,28 +2,32 @@
 % Please edit documentation in R/NCdown.R
 \name{NCdown}
 \alias{NCdown}
-\title{NCdown: Download dos dados do NOVO CAGED}
+\title{NCdown: Download do arquivo .xlsx do Novo CAGED}
 \usage{
 NCdown(year = NULL, month = NULL, path = NULL)
 }
 \arguments{
-\item{year}{valor numérico}
+\item{year}{Parâmetro numérico. Determina o ano do download do Novo CAGED. Deve ser selecionado somente um ano.}
 
-\item{month}{string para o mês}
+\item{month}{Parâmetro 'string'. Determina o mês do download da pesquisa de interesse. Deve ser selecionado somente um mês. Ex.: "Junho".}
 
-\item{path}{diretório para salvar os dados baixados}
-}
-\value{
-Salva a planilha do PDET com os dados do NOVO CAGED no diretório informado.
+\item{path}{Diretório onde o aquivo .xlsx do PDET com os dados do NOVO CAGED será salvo.}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}}
+
 Realiza o download do aquivo .xlsx no site do Ministério do Trabalho - PDET com os dados do NOVO CAGED para o ano e mês especificados.
 }
 \examples{
+# install.packages("devtools")
+# devtools::install_github("Natanaelsl/NCAGEDdataR")
+
+# Carregando o pacote
+# library(NCAGEDdataR)
+
 # Definindo download para a pasta do diretório em uso
-NCdown(2023, "Janeiro", " ")
+NCdown(2023, "Junho", " ")
 
-# Definindo pasta para salvar o arquivo
-# NCdown(2023, "Janeiro", "../documents/")
-
+# Definindo pasta específica para salvar o arquivo
+NCdown(2023, "Junho", path = paste0(Sys.getenv("USERPROFILE"),"\\\\", "Documents\\\\"))
 }

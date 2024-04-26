@@ -2,7 +2,7 @@ Package: NCAGEDdataR
 Title: Utilizar facilmente conjuntos de dados do NOVO CAGED
 Version: 0.0.0.9000
 Authors@R: 
-    person("Natanael", "Leite", , "natanaelsoaresleite@gmail.com", role = c("aut", "cre"),
+    person("Natanael", "Soares Leite", , "natanaelsoaresleite@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-1845-7095"))
 Description: Realiza a extração dos dados retornando como lista cada uma das abas do aquivo .xlsx dísponibilizado no site do Ministério do Trabalho - PDET.
 License: MIT + file LICENSE
@@ -19,6 +19,7 @@ Imports:
     gtools,
     httr,
     janitor,
+    lifecycle,
     magrittr,
     RCurl,
     readxl,

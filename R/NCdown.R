@@ -1,21 +1,28 @@
-#' NCdown: Download dos dados do NOVO CAGED
+#' NCdown: Download do arquivo .xlsx do Novo CAGED
+#'
+#' @description
+#' `r lifecycle::badge("maturing")`
 #'
 #' Realiza o download do aquivo .xlsx no site do Ministério do Trabalho - PDET com os dados do NOVO CAGED para o ano e mês especificados.
 #'
-#' @param year valor numérico
-#' @param month string para o mês
-#' @param path diretório para salvar os dados baixados
-#'
-#' @return Salva a planilha do PDET com os dados do NOVO CAGED no diretório informado.
-#'
-#' @examples
-#' # Definindo download para a pasta do diretório em uso
-#' NCdown(2023, "Janeiro", " ")
-#'
-#' # Definindo pasta para salvar o arquivo
-#' # NCdown(2023, "Janeiro", "../documents/")
-#'
+#' @inheritParams expand
+#' @param year Parâmetro numérico. Determina o ano do download do Novo CAGED. Deve ser selecionado somente um ano.
+#' @param month Parâmetro 'string'. Determina o mês do download da pesquisa de interesse. Deve ser selecionado somente um mês. Ex.: "Junho".
+#' @param path Diretório onde o aquivo .xlsx do PDET com os dados do NOVO CAGED será salvo.
+#' @inheritParams NCdown_
 #' @export
+#' @examples
+#' # install.packages("devtools")
+#' # devtools::install_github("Natanaelsl/NCAGEDdataR")
+#'
+#' # Carregando o pacote
+#' # library(NCAGEDdataR)
+#'
+#' # Definindo download para a pasta do diretório em uso
+#' NCdown(2023, "Junho", " ")
+#'
+#' # Definindo pasta específica para salvar o arquivo
+#' NCdown(2023, "Junho", path = paste0(Sys.getenv("USERPROFILE"),"\\", "Documents\\"))
 NCdown <- function(year = NULL, month = NULL, path = NULL) {
 
   # stringi::stri_escape_unicode("ê")
@@ -35,13 +42,13 @@ NCdown <- function(year = NULL, month = NULL, path = NULL) {
       cli::cli_alert_danger("O ano deve ser maior ou igual a 2020.")
       return(NULL)
     }
-    if (year == 2020) {
-      cli::cli_div(theme = list(span.emph = list(color = "orange")))
-      cli::cli_text("{.emph Desculpa, a extra\\u00e7\\u00e3o dO ano de 2020 est\\u00e1 em fase de constru\\u00e7\\u00e3o.}")
-      cli::cli_end()
-      # cli::cli_alert_info("Desculpa, a extração dO ano de 2020 está em fase de construção.")
-      return(NULL)
-    }
+    # if (year == 2020) {
+    #   cli::cli_div(theme = list(span.emph = list(color = "orange")))
+    #   cli::cli_text("{.emph Desculpa, a extração dO ano de 2020 está em fase de construção.}")
+    #   cli::cli_end()
+    #   # cli::cli_alert_info("Desculpa, a extração dO ano de 2020 está em fase de construção.")
+    #   return(NULL)
+    # }
     if (year > timeDate::getRmetricsOptions("currentYear")) {
       # cli::cli_alert_danger("O ano não pode ser maior que o ano atual.")
       return(NULL)
@@ -61,10 +68,10 @@ NCdown <- function(year = NULL, month = NULL, path = NULL) {
 
       url <- paste0("http://pdet.mte.gov.br", xlsx)
 
-      cli::cli_progress_step(paste0("Come", "\\u00e7", "ando o Download dos Dados CAGED"), spinner = TRUE)
+      cli::cli_progress_step("Começando o Download dos Dados CAGED", spinner = TRUE)
       cli::cli_progress_step("Download realizado!", spinner = TRUE)
 
-      httr::GET(url, httr::write_disk(tf <- paste0(path, "NOVO_CAGED_", month, "_", year, ".xlsx")), httr::progress(), overwrite = FALSE)
+      httr::GET(url, httr::write_disk(tf <- paste0(path, "NOVO_CAGED_", month, "_", year, ".xlsx")), httr::progress(), overwrite = TRUE)
 
       cat(paste("Os dados foram extraidos do link abaixo:", "\n", url, "\nOs arquivos foram salvos em:", "\n", tf, "\n"))
       # cat(paste("\nOs arquivos foram salvos temporariamente em:", "\n", tf))
@@ -95,10 +102,10 @@ NCdown <- function(year = NULL, month = NULL, path = NULL) {
 
         url <- paste0("http://pdet.mte.gov.br", xlsx2)
 
-        cli::cli_progress_step("Come\\u00e7ando o Download dos Dados CAGED", spinner = TRUE)
+        cli::cli_progress_step("Começando o Download dos Dados CAGED", spinner = TRUE)
         cli::cli_progress_step("Download realizado!", spinner = TRUE)
 
-        httr::GET(url, httr::write_disk(tf <- paste0(path, "NOVO_CAGED_", month, "_", year, ".xlsx")), httr::progress(), overwrite = FALSE)
+        httr::GET(url, httr::write_disk(tf <- paste0(path, "NOVO_CAGED_", month, "_", year, ".xlsx")), httr::progress(), overwrite = TRUE)
 
         cat(paste("Os dados foram extraidos do link abaixo:", "\n", url, "\nOs arquivos foram salvos em:", "\n", tf, "\n"))
         # cat(paste("\nOs arquivos foram salvos temporariamente em:", "\n", tf))
@@ -107,8 +114,8 @@ NCdown <- function(year = NULL, month = NULL, path = NULL) {
 
       }
       if(abjutils::rm_accent(tolower({{month}})) != abjutils::rm_accent(tolower({{month1}})) | is.null(year) & is.null(month) & !is.null(path)){
-        cli::cli_alert_info("Poss\\u00edvel erro na declara\\u00e7\\u00e3o das informa\\u00e7\\u00f5es de ano e m\\u00eas! \nVerificar dados informados.\n")
-        pesquisa <- gtools::ask(paste("\nUtilizar \\u00faltima pesquisa dispon\\u00edvel? (", month1, ") \nInforme 'sim' ou 'n\\u00e3o'!"))
+        cli::cli_alert_info("Possivel erro na declaração das informações de ano e mês! \nVerificar dados informados.\n")
+        pesquisa <- gtools::ask(paste("\nUtilizar últiima pesquisa disponnível? (", month1, ") \nInforme 'sim' ou 'não'!"))
         pesquisa <- as.character(pesquisa)
 
         if(pesquisa == "sim"){
@@ -123,7 +130,7 @@ NCdown <- function(year = NULL, month = NULL, path = NULL) {
           cli::cli_progress_step("Come\\u00e7ando o Download dos Dados CAGED", spinner = TRUE)
           cli::cli_progress_step("Download realizado!", spinner = TRUE)
 
-          httr::GET(url, httr::write_disk(tf <- paste0(path, "NOVO_CAGED_", month, "_", year, ".xlsx")), httr::progress(), overwrite = FALSE)
+          httr::GET(url, httr::write_disk(tf <- paste0(path, "NOVO_CAGED_", month, "_", year, ".xlsx")), httr::progress(), overwrite = TRUE)
 
           cat(paste("Os dados foram extraidos do link abaixo:", "\n", url, "\nOs arquivos foram salvos em:", "\n", tf, "\n"))
           # cat(paste("\nOs arquivos foram salvos temporariamente em:", "\n", tf))
@@ -131,7 +138,7 @@ NCdown <- function(year = NULL, month = NULL, path = NULL) {
           cli::cli_progress_done()
 
         }
-        if(pesquisa == "n\\u00e3o"){
+        if(pesquisa == "não"){
 
           cli::cli_alert_danger("Tudo bem, verifique os dados informados!")
 
