@@ -44,16 +44,6 @@ processar_caged <- function(usar_temporario = FALSE,
                             origem = "dados_caged_raw",
                             destino = "dados_caged_parquet") {
 
-  # suppressPackageStartupMessages({
-  #   library(readxl)
-  #   library(dplyr)
-  #   library(stringr)
-  #   library(tidyr)
-  #   library(purrr)
-  #   library(arrow)
-  #   library(cli)
-  # })
-
   # --- CONFIGURAÇÃO DE CAMINHO ---
   if (usar_temporario) {
     pasta_busca <- tempdir()
@@ -62,7 +52,6 @@ processar_caged <- function(usar_temporario = FALSE,
     pasta_busca <- origem
   }
 
-  # Ajuste Crítico: Verifica se 'origem' é um arquivo direto (Mock) ou uma pasta
   if (file.exists(pasta_busca) && !dir.exists(pasta_busca)) {
     caminho_arquivo <- pasta_busca
   } else {
@@ -73,14 +62,13 @@ processar_caged <- function(usar_temporario = FALSE,
       return(invisible(NULL))
     }
 
-    # Seleciona o arquivo mais recente na pasta
     info_arquivos <- file.info(arquivos)
     caminho_arquivo <- rownames(info_arquivos)[which.max(info_arquivos$mtime)]
   }
 
   cli::cli_h1("⚙️ Processando Base: {basename(caminho_arquivo)}")
 
-  # --- SUBFUNÇÃO DE PADRONIZAÇÃO ---
+  # --- SUBFUNÇÃO DE PADRONIZAÇÃO (Geral) ---
   padronizar_cabecalho <- function(df_local, colunas_chave) {
     indice_corte <- which(stringr::str_detect(stringr::str_trim(df_local[[1]]), "(?i)^Não identificado"))[1]
     if(!is.na(indice_corte)) df_limpo <- df_local %>% dplyr::slice(1:indice_corte) else df_limpo <- df_local
@@ -114,7 +102,43 @@ processar_caged <- function(usar_temporario = FALSE,
     } else if (stringr::str_detect(nome_aba, "^Tabela 3|^Tabela 8")) {
       return(padronizar_cabecalho(df, c("UF", "Codigo_Municipio", "Municipio")))
     } else if (stringr::str_detect(nome_aba, "^Tabela 4")) {
-      return(padronizar_cabecalho(df, c("Categoria")))
+      # 1. Recupera os estados que estão na primeira linha de dados
+      estados_linha <- as.character(df[1, ])
+      nomes_cols <- names(df)
+
+      # Carry forward: Preenche os nomes das colunas com os estados da Linha 1
+      for(i in 2:length(nomes_cols)) {
+        if(!is.na(estados_linha[i]) && !grepl("^\\.\\.\\.", estados_linha[i])) {
+          nomes_cols[i] <- estados_linha[i]
+        } else {
+          nomes_cols[i] <- nomes_cols[i-1]
+        }
+      }
+
+      # 2. Recupera as métricas (Saldos, Estoques) que estão na linha 2
+      metricas_linha <- as.character(df[2, ])
+
+      # 3. Reconstrói o cabeçalho combinado
+      names(df) <- paste(nomes_cols, metricas_linha, sep = "___")
+      names(df)[1] <- "Categoria"
+
+      # Remove as duas linhas de cabeçalho manual e limpa
+      return(df[-c(1, 2), ] %>%
+               tidyr::pivot_longer(
+                 cols = -Categoria,
+                 names_to = c("Regiao_UF", "Metrica"),
+                 names_sep = "___",
+                 values_to = "Valor"
+               ) %>%
+               dplyr::mutate(
+                 Valor = suppressWarnings(as.numeric(Valor)),
+                 Regiao_UF = stringr::str_trim(Regiao_UF)
+               ) %>%
+               # Filtro de segurança para remover ruídos e totais
+               dplyr::filter(!stringr::str_detect(Regiao_UF, "(?i)Unidade|Total|Brasil|Região|\\.\\.\\.")) %>%
+               dplyr::filter(!is.na(Valor)) %>%
+               dplyr::mutate(Tabela_Origem = nome_aba))
+
     } else if (stringr::str_detect(nome_aba, "^Tabela 5")) {
       indice_corte <- which(stringr::str_detect(df[[1]], "(?i)^Fonte|^Nota"))[1]
       if (!is.na(indice_corte)) df_limpo <- df %>% dplyr::slice(1:(indice_corte - 1)) else df_limpo <- df
@@ -138,7 +162,6 @@ processar_caged <- function(usar_temporario = FALSE,
 
   # --- EXECUÇÃO ---
   abas <- readxl::excel_sheets(caminho_arquivo)
-
   lista_tabelas <- purrr::map(abas, function(aba) {
     df_bruto <- tryCatch(suppressMessages(readxl::read_excel(caminho_arquivo, sheet = aba, skip = 4)), error = function(e) NULL)
     if (is.null(df_bruto) || nrow(df_bruto) == 0) return(NULL)
@@ -165,8 +188,6 @@ processar_caged <- function(usar_temporario = FALSE,
     caminho_final <- file.path(destino, paste0("CAGED_CONSOLIDADO_", ym, ".parquet"))
     arrow::write_parquet(df_consolidado, caminho_final)
     cli::cli_alert_success("Concluído! Base unificada em: {basename(caminho_final)}")
-
-    # Ajuste Crítico: Retorna o Dataset Arrow para o teste e para o usuário
     return(arrow::open_dataset(caminho_final))
   }
 }
