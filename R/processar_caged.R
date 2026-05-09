@@ -60,12 +60,31 @@ processar_caged <- function(usar_temporario = FALSE,
     caminho_arquivo <- rownames(info_arquivos)[which.max(info_arquivos$mtime)]
   }
 
+  # 1. Extração do Período do NOME DO ARQUIVO (ex: 202603)
   ym <- stringr::str_extract(basename(caminho_arquivo), "\\d{4,6}")
-  if(is.na(ym)) ym <- "ATUAL"
+
+  # 2. Função para converter o código do arquivo para Extenso (ex: 202603 -> Março/2026)
+  formatar_mes_referencia <- function(data_str) {
+    if(is.na(data_str)) return("Desconhecido")
+    # Converte string 202603 para objeto de data
+    data_dt <- as.Date(paste0(data_str, "01"), format = "%Y%m%d")
+
+    # Vetor de meses para garantir português
+    meses <- c("Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+               "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro")
+
+    mes_nome <- meses[as.numeric(format(data_dt, "%m"))]
+    ano_nome <- format(data_dt, "%Y")
+
+    return(paste0(mes_nome, "/", ano_nome))
+  }
+
+  # Criamos a variável com o mês do arquivo
+  mes_referencia_arquivo <- formatar_mes_referencia(ym)
 
   cli::cli_h1("⚙️ Processando Base: {basename(caminho_arquivo)}")
 
-  # --- SUBFUNÇÃO DE PADRONIZAÇÃO (RESTALRADA) ---
+  # --- SUBFUNÇÃO DE PADRONIZAÇÃO GERAL ---
   padronizar_cabecalho <- function(df_local, colunas_chave) {
     indice_corte <- which(stringr::str_detect(stringr::str_trim(df_local[[1]]), "(?i)^Não identificado"))[1]
     df_limpo <- if(!is.na(indice_corte)) dplyr::slice(df_local, 1:indice_corte) else df_local
@@ -89,7 +108,6 @@ processar_caged <- function(usar_temporario = FALSE,
   limpar_caged_dinamico <- function(df, nome_aba) {
     df <- df %>% dplyr::mutate(dplyr::across(dplyr::everything(), as.character))
     nome_aba <- stringr::str_trim(nome_aba)
-
     res <- NULL
 
     if (stringr::str_detect(nome_aba, "^Tabela 1|^Tabela 6|^Tabela 10")) {
@@ -99,7 +117,8 @@ processar_caged <- function(usar_temporario = FALSE,
     } else if (stringr::str_detect(nome_aba, "^Tabela 3|^Tabela 8")) {
       res <- padronizar_cabecalho(df, c("UF", "Codigo_Municipio", "Municipio"))
     } else if (stringr::str_detect(nome_aba, "^Tabela 4")) {
-      # Lógica Tabela 4 conforme exigências
+
+      # Processamento customizado Tabela 4
       estados_linha <- as.character(df[1, ])
       metricas_linha <- as.character(df[2, ])
       nomes_cols <- names(df)
@@ -112,11 +131,16 @@ processar_caged <- function(usar_temporario = FALSE,
 
       res <- df[-c(1, 2), ] %>%
         tidyr::pivot_longer(cols = -Grupamento_CNAE, names_to = c("UF_temp", "Metrica_temp"), names_sep = "___", values_to = "Valor_temp") %>%
-        dplyr::mutate(UF = stringr::str_trim(UF_temp),
-                      Valor = suppressWarnings(as.numeric(Valor_temp)),
-                      Periodo = ym, Metrica = NA_character_) %>%
+        dplyr::mutate(
+          UF = stringr::str_trim(UF_temp),
+          Grupamento_CNAE = stringr::str_trim(Grupamento_CNAE),
+          Valor = suppressWarnings(as.numeric(Valor_temp)),
+          Periodo = mes_referencia_arquivo, # Usa a data extraída do ARQUIVO
+          Metrica = "Saldo"
+        ) %>%
         dplyr::select(-UF_temp, -Metrica_temp, -Valor_temp) %>%
         dplyr::filter(!stringr::str_detect(UF, "(?i)Unidade|Total|Brasil|Região|\\.\\.\\."))
+
     } else if (stringr::str_detect(nome_aba, "^Tabela 5|^Tabela 9")) {
       indice_corte <- which(stringr::str_detect(df[[1]], "(?i)^Fonte|^Nota"))[1]
       df_limpo <- if (!is.na(indice_corte)) df[1:(indice_corte - 1), ] else df
@@ -132,7 +156,7 @@ processar_caged <- function(usar_temporario = FALSE,
     return(res)
   }
 
-  # --- EXECUÇÃO ---
+  # --- EXECUÇÃO FINAL ---
   abas <- readxl::excel_sheets(caminho_arquivo)
   lista_tabelas <- purrr::map(abas, function(aba) {
     df_bruto <- tryCatch(suppressMessages(readxl::read_excel(caminho_arquivo, sheet = aba, skip = 4)), error = function(e) NULL)
