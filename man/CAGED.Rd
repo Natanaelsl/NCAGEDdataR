@@ -7,6 +7,8 @@
 CAGED(ref = "last", parquet_individual = FALSE, arquivo_alvo = NULL)
 }
 \arguments{
+\item{ref}{String. O ano/mês de referência (ex: "202401"). Se NULL, busca o mais recente.}
+
 \item{parquet_individual}{Lógico. Se TRUE, salva cada aba original como um arquivo Parquet separado. Se FALSE (padrão), consolida tudo em um único dataset.}
 
 \item{arquivo_alvo}{String opcional. Define um ano específico ou ano/mês para processamento. Se NULL, processa a última versão disponível.}

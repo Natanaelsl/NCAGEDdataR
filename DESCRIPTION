@@ -22,7 +22,16 @@ Imports:
     readxl,
     stringr,
     purrr,
-    tidyr
+    tidyr,
+    glue,
+    lubridate,
+    rvest,
+    RCurl,
+    abjutils,
+    gtools,
+    lifecycle,
+    timeDate
 Suggests: 
+    rprojroot,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

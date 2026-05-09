@@ -8,6 +8,7 @@
 #' @param path Diretório onde o aquivo .xlsx do PDET com os dados do NOVO CAGED será salvo.
 #' @export
 #' @examples
+#' \dontrun{
 #' # install.packages("devtools")
 #' # devtools::install_github("Natanaelsl/NCAGEDdataR")
 #'
@@ -19,6 +20,7 @@
 #'
 #' # Definindo pasta específica para salvar o arquivo
 #' NCdown(2023, "Junho", path = paste0(Sys.getenv("USERPROFILE"),"\\", "Documents\\"))
+#' }
 NCdown <- function(year = NULL, month = NULL, path = NULL) {
   lifecycle::deprecate_warn("1.0.0", "NCdata()", "CAGED()")
   # stringi::stri_escape_unicode("ê")

@@ -15,6 +15,7 @@ NCdata(year = NULL, month = NULL)
 Realiza o extração dos dados, para o ano e mês especificados, retornando uma lista de 'data.frame' cada uma das abas do aquivo .xlsx dísponibilizado no site do Ministério do Trabalho - PDET.
 }
 \examples{
+\dontrun{
 # install.packages("devtools")
 # devtools::install_github("Natanaelsl/NCAGEDdataR")
 
@@ -23,4 +24,5 @@ Realiza o extração dos dados, para o ano e mês especificados, retornando uma 
 
 # Extraindo dados de Junho/2023
 NCdata(2023, "Junho")
+}
 }

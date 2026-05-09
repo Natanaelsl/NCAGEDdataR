@@ -7,6 +7,7 @@
 #' @param month Parâmetro 'string'. Determina o mês da pesquisa de interesse. Deve ser selecionado somente um mês. Ex.: "Junho".
 #' @export
 #' @examples
+#' \dontrun{
 #' # install.packages("devtools")
 #' # devtools::install_github("Natanaelsl/NCAGEDdataR")
 #'
@@ -15,6 +16,7 @@
 #'
 #' # Extraindo dados de Junho/2023
 #' NCdata(2023, "Junho")
+#' }
 NCdata <- function(year = NULL, month = NULL) {
   lifecycle::deprecate_warn("1.0.0", "NCdata()", "CAGED()")
   # stringi::stri_escape_unicode("ê")

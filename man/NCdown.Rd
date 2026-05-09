@@ -17,6 +17,7 @@ NCdown(year = NULL, month = NULL, path = NULL)
 Realiza o download do aquivo .xlsx no site do Ministério do Trabalho - PDET com os dados do NOVO CAGED para o ano e mês especificados.
 }
 \examples{
+\dontrun{
 # install.packages("devtools")
 # devtools::install_github("Natanaelsl/NCAGEDdataR")
 
@@ -28,4 +29,5 @@ NCdown(2023, "Junho", " ")
 
 # Definindo pasta específica para salvar o arquivo
 NCdown(2023, "Junho", path = paste0(Sys.getenv("USERPROFILE"),"\\\\", "Documents\\\\"))
+}
 }

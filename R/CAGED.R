@@ -8,6 +8,7 @@
 #' para uma pasta segura, padroniza a estrutura das planilhas e persiste os dados
 #' em formato colunar de alta performance (Apache Parquet).
 #'
+#' @param ref String. O ano/mês de referência (ex: "202401"). Se NULL, busca o mais recente.
 #' @param arquivo_alvo String opcional. Define um ano específico ou ano/mês para processamento. Se NULL, processa a última versão disponível.
 #' @param parquet_individual Lógico. Se TRUE, salva cada aba original como um arquivo Parquet separado. Se FALSE (padrão), consolida tudo em um único dataset.
 #'
