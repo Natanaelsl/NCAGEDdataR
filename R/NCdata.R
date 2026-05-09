@@ -1,14 +1,10 @@
 #' NCdata: Extração de dados do Novo CAGED
 #'
 #' @description
-#' `r lifecycle::badge("maturing")`
-#'
 #' Realiza o extração dos dados, para o ano e mês especificados, retornando uma lista de 'data.frame' cada uma das abas do aquivo .xlsx dísponibilizado no site do Ministério do Trabalho - PDET.
 #'
-#' @inheritParams expand
 #' @param year Parâmetro numérico. Determina qual o ano do Novo CAGED que será extraido. Deve ser selecionado somente um ano.
 #' @param month Parâmetro 'string'. Determina o mês da pesquisa de interesse. Deve ser selecionado somente um mês. Ex.: "Junho".
-#' @inheritParams NCdata_
 #' @export
 #' @examples
 #' # install.packages("devtools")
@@ -20,7 +16,7 @@
 #' # Extraindo dados de Junho/2023
 #' NCdata(2023, "Junho")
 NCdata <- function(year = NULL, month = NULL) {
-
+  lifecycle::deprecate_warn("1.0.0", "NCdata()", "CAGED()")
   # stringi::stri_escape_unicode("ê")
   # dang::checkPackageAsciiCode(dir = ".")
   # NÃO RETORNAR MENSAGENS DE ERROR

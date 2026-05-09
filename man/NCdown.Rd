@@ -14,8 +14,6 @@ NCdown(year = NULL, month = NULL, path = NULL)
 \item{path}{Diretório onde o aquivo .xlsx do PDET com os dados do NOVO CAGED será salvo.}
 }
 \description{
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#maturing}{\figure{lifecycle-maturing.svg}{options: alt='[Maturing]'}}}{\strong{[Maturing]}}
-
 Realiza o download do aquivo .xlsx no site do Ministério do Trabalho - PDET com os dados do NOVO CAGED para o ano e mês especificados.
 }
 \examples{

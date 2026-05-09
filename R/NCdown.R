@@ -1,15 +1,11 @@
 #' NCdown: Download do arquivo .xlsx do Novo CAGED
 #'
 #' @description
-#' `r lifecycle::badge("maturing")`
-#'
 #' Realiza o download do aquivo .xlsx no site do Ministério do Trabalho - PDET com os dados do NOVO CAGED para o ano e mês especificados.
 #'
-#' @inheritParams expand
 #' @param year Parâmetro numérico. Determina o ano do download do Novo CAGED. Deve ser selecionado somente um ano.
 #' @param month Parâmetro 'string'. Determina o mês do download da pesquisa de interesse. Deve ser selecionado somente um mês. Ex.: "Junho".
 #' @param path Diretório onde o aquivo .xlsx do PDET com os dados do NOVO CAGED será salvo.
-#' @inheritParams NCdown_
 #' @export
 #' @examples
 #' # install.packages("devtools")
@@ -24,7 +20,7 @@
 #' # Definindo pasta específica para salvar o arquivo
 #' NCdown(2023, "Junho", path = paste0(Sys.getenv("USERPROFILE"),"\\", "Documents\\"))
 NCdown <- function(year = NULL, month = NULL, path = NULL) {
-
+  lifecycle::deprecate_warn("1.0.0", "NCdata()", "CAGED()")
   # stringi::stri_escape_unicode("ê")
   # dang::checkPackageAsciiCode(dir = ".")
   # NÃO RETORNAR MENSAGENS DE ERROR
