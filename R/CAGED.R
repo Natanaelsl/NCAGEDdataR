@@ -37,35 +37,58 @@ CAGED <- function(ref = NULL,
                   parquet_individual = FALSE,
                   forcar = FALSE) {
 
-  # --- PRIORIDADE 1: ACESSO DIRETO (SEMÂNTICA LOCAL) ---
-  # Se o usuário passou um arquivo específico, ele quer pular todo o pipeline.
+  # --- 1. PRIORIDADE MÁXIMA: ARQUIVO ESPECÍFICO ---
+  # Se o usuário já deu o caminho (arquivo_alvo), abre direto e ignora o resto.
   if (!is.null(arquivo_alvo)) {
     if (!file.exists(arquivo_alvo)) {
-      cli::cli_alert_danger("Arquivo alvo não encontrado: {.file {arquivo_alvo}}")
-      stop("Erro de caminho local.")
+      cli::cli_alert_danger("Erro: Arquivo {.file {arquivo_alvo}} não encontrado.")
+      stop("Caminho inválido.", call. = FALSE)
     }
-    cli::cli_alert_info("Modo Manual: Abrindo {.file {basename(arquivo_alvo)}}")
     return(arrow::open_dataset(arquivo_alvo))
   }
 
-  # --- PRIORIDADE 2: CACHE INTELIGENTE (SEMÂNTICA DE PERFORMANCE) ---
-  # Se ref for NULL, buscamos o período mais novo no Drive para comparar com o local.
-  periodo_remoto <- if(is.null(ref)) download_caged(temp = TRUE) else ref
-
-  # Busca o cache local para comparação
+  # --- 2. VERIFICAÇÃO DE CACHE (SMART CACHE) ---
+  # Busca o consolidado mais recente para comparação de datas
   arquivo_local <- list.files(destino, pattern = "CAGED_CONSOLIDADO_.*\\.parquet$", full.names = TRUE) %>%
-    sort(decreasing = TRUE) %>% .[1]
+    sort(decreasing = TRUE) %>%
+    .[1]
+
   periodo_local <- stringr::str_extract(basename(arquivo_local), "\\d{4,6}")
 
+  # Sensor: apenas verifica qual o mês mais novo na nuvem (sem baixar nada)
+  periodo_remoto <- download_caged(temp = TRUE)
+
+  # Se o local for >= remoto (ex: 202605 >= 202605), retornamos o que já temos
   if (!forcar && !is.na(arquivo_local) && !is.na(periodo_remoto) && periodo_local >= periodo_remoto) {
-    cli::cli_alert_success("Cache atualizado ({periodo_local}). Operação instantânea.")
+    cli::cli_alert_success("Dados locais atualizados ({periodo_local}). Pulando download.")
+
+    # Aqui respeitamos o argumento parquet_individual mesmo no cache
+    if (parquet_individual) {
+      cli::cli_alert_info("Modo individual: Por favor, indique o arquivo em 'arquivo_alvo' ou processe os dados.")
+    }
     return(arrow::open_dataset(arquivo_local))
   }
 
-  # --- PRIORIDADE 3: ATUALIZAÇÃO (SEMÂNTICA DE FLUXO) ---
-  # Se chegou aqui, é porque o cache está velho, não existe ou o usuário forçou.
-  cli::cli_h1("🚀 Pipeline de Atualização")
-  # ... segue o download_caged(ref = periodo_remoto) e processar_caged() ...
+  # --- 3. FLUXO DE ATUALIZAÇÃO (Sincronização com 2026) ---
+  cli::cli_h1("🚀 Atualização para versão: {periodo_remoto}")
+
+  # Download real (temp = FALSE para salvar no disco)
+  download_caged(ref = if(is.null(ref)) periodo_remoto else ref, temp = FALSE)
+
+  # Processamento respeitando sua flag de parquets individuais
+  processar_caged(destino = destino, parquet_individual = parquet_individual)
+
+  # --- 4. RETORNO PÓS-PROCESSAMENTO ---
+  if (parquet_individual) {
+    cli::cli_alert_info("Processamento concluído. Parquets individuais gerados em {.path {destino}}.")
+    # Como são múltiplos arquivos, retornamos o diretório para o Arrow mapear
+    return(arrow::open_dataset(destino))
+  } else {
+    arquivos_consolidados <- list.files(destino, pattern = "CONSOLIDADO", full.names = TRUE)
+    caminho_novo <- tail(sort(arquivos_consolidados), 1)
+    cli::cli_alert_success("Dataset consolidado carregado.")
+    return(arrow::open_dataset(caminho_novo))
+  }
 }
 
 # Nova Arquitetura de Cache Inteligente (Smart Cache)

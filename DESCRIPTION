@@ -30,6 +30,7 @@ Imports:
     abjutils,
     gtools,
     lifecycle,
+    tibble,
     timeDate
 Suggests: 
     rprojroot,
