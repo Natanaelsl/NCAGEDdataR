@@ -1,8 +1,6 @@
 NCAGEDdataR
 ================
 
-# NCAGEDdataR
-
 <img align="right" src="man/figures/NCAGEDdataR_logo1.png" alt="logo" width="180"><img align="right" src="man/figures/NCAGEDdataR_logo2.png" alt="logo" width="180">
 
 O pacote **`NCAGEDdataR`** foi desenvolvido para oferecer um pipeline de
