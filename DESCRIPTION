@@ -1,10 +1,10 @@
 Package: NCAGEDdataR
-Title: Utilizar facilmente conjuntos de dados do NOVO CAGED
-Version: 0.0.0.9000
+Title: Pipeline de Alta Performance para Dados do NOVO CAGED
+Version: 2.0.0
 Authors@R: 
     person("Natanael", "Soares Leite", , "natanaelsoaresleite@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-1845-7095"))
-Description: Realiza a extração dos dados retornando como lista cada uma das abas do aquivo .xlsx dísponibilizado no site do Ministério do Trabalho - PDET.
+Description: Automatiza o ciclo de extração e tratamento de dados do Novo CAGED, convertendo planilhas complexas do portal PDET/MTE em datasets otimizados e de alta performance. Implementa arquitetura baseada em Apache Parquet e Lazy Evaluation via Apache Arrow, ideal para análises econômicas e fiscais em larga escala.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -12,21 +12,16 @@ RoxygenNote: 7.2.3
 URL: https://github.com/Natanaelsl/NCAGEDdataR
 BugReports: https://github.com/Natanaelsl/NCAGEDdataR/issues
 Imports: 
-    abjutils,
+    arrow,
     cli,
     dplyr,
-    glue,
-    gtools,
+    googledrive,
     httr,
     janitor,
-    lifecycle,
     magrittr,
-    RCurl,
     readxl,
-    rvest,
     stringr,
-    tidyr,
-    timeDate
+    tidyr
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
