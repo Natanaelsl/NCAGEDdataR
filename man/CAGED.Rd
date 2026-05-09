@@ -4,14 +4,24 @@
 \alias{CAGED}
 \title{Orquestrador Principal: Extração e Tratamento do Novo CAGED}
 \usage{
-CAGED(ref = "last", parquet_individual = FALSE, arquivo_alvo = NULL)
+CAGED(
+  ref = NULL,
+  destino = "dados_caged_parquet",
+  arquivo_alvo = NULL,
+  parquet_individual = FALSE,
+  forcar = FALSE
+)
 }
 \arguments{
-\item{ref}{String. O ano/mês de referência (ex: "202401"). Se NULL, busca o mais recente.}
+\item{ref}{É a referência temporal (ex: "202401"). Serve para o download. Se for NULL, o pacote descobre sozinho qual é o mês mais novo no Drive.}
+
+\item{destino}{Caminho da pasta onde os arquivos Parquet serão salvos.}
+
+\item{arquivo_alvo}{É o caminho físico para um arquivo .parquet. Se preenchido, o pacote ignora a internet e abre o arquivo diretamente (Modo Manual).}
 
 \item{parquet_individual}{Lógico. Se TRUE, salva cada aba original como um arquivo Parquet separado. Se FALSE (padrão), consolida tudo em um único dataset.}
 
-\item{arquivo_alvo}{String opcional. Define um ano específico ou ano/mês para processamento. Se NULL, processa a última versão disponível.}
+\item{forcar}{Um booleano (TRUE/FALSE). Se TRUE, ignora o cache e refaz o download/processamento. Essencial para corrigir dados corrompidos ou capturar retificações oficiais do Ministério do Trabalho.}
 }
 \value{
 Retorna uma conexão de alta performance (Dataset Arrow) apontando para os dados consolidados, pronta para avaliação preguiçosa (Lazy Evaluation) via \code{dplyr}.
