@@ -118,28 +118,42 @@ processar_caged <- function(usar_temporario = FALSE,
       res <- padronizar_cabecalho(df, c("UF", "Codigo_Municipio", "Municipio"))
     } else if (stringr::str_detect(nome_aba, "^Tabela 4")) {
 
-      # Processamento customizado Tabela 4
+      # 1. Identificação de cabeçalhos (Estados na linha 1, Métricas na linha 2)
       estados_linha <- as.character(df[1, ])
       metricas_linha <- as.character(df[2, ])
       nomes_cols <- names(df)
+
       for(i in 2:length(nomes_cols)) {
-        if(!is.na(estados_linha[i]) && !grepl("^\\.\\.\\.", estados_linha[i])) nomes_cols[i] <- estados_linha[i]
-        else nomes_cols[i] <- nomes_cols[i-1]
+        if(!is.na(estados_linha[i]) && !grepl("^\\.\\.\\.", estados_linha[i])) {
+          nomes_cols[i] <- estados_linha[i]
+        } else {
+          nomes_cols[i] <- nomes_cols[i-1]
+        }
       }
+
       names(df) <- paste(nomes_cols, metricas_linha, sep = "___")
       names(df)[1] <- "Grupamento_CNAE"
 
+      # 2. Processamento com os novos ajustes de Metrica e Periodo
       res <- df[-c(1, 2), ] %>%
-        tidyr::pivot_longer(cols = -Grupamento_CNAE, names_to = c("UF_temp", "Metrica_temp"), names_sep = "___", values_to = "Valor_temp") %>%
+        tidyr::pivot_longer(
+          cols = -Grupamento_CNAE,
+          names_to = c("UF_temp", "Metrica_temp"),
+          names_sep = "___",
+          values_to = "Valor_temp"
+        ) %>%
         dplyr::mutate(
           UF = stringr::str_trim(UF_temp),
           Grupamento_CNAE = stringr::str_trim(Grupamento_CNAE),
           Valor = suppressWarnings(as.numeric(Valor_temp)),
-          Periodo = mes_referencia_arquivo, # Usa a data extraída do ARQUIVO
+          # AJUSTE 1: Mês/Ano por extenso baseado no arquivo
+          Periodo = mes_referencia_arquivo,
+          # AJUSTE 2: Metrica fixa como "Saldo"
           Metrica = "Saldo"
         ) %>%
         dplyr::select(-UF_temp, -Metrica_temp, -Valor_temp) %>%
-        dplyr::filter(!stringr::str_detect(UF, "(?i)Unidade|Total|Brasil|Região|\\.\\.\\."))
+        dplyr::filter(!stringr::str_detect(UF, "(?i)Unidade|Total|Brasil|Região|\\.\\.\\.")) %>%
+        dplyr::filter(!is.na(Valor))
 
     } else if (stringr::str_detect(nome_aba, "^Tabela 5|^Tabela 9")) {
       indice_corte <- which(stringr::str_detect(df[[1]], "(?i)^Fonte|^Nota"))[1]
